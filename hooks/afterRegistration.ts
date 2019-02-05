@@ -5,7 +5,7 @@ import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
 
 const EXTENSION_KEY = 'wordpress'
-const TEST_ENTITY_TYPE = 'testentity'
+const ENTITY_TYPE = 'wp'
 
 export function afterRegistration (Vue, config, store, isServer) {
   Vue.$on('application-after-init', async () => {
@@ -17,9 +17,9 @@ export function afterRegistration (Vue, config, store, isServer) {
     // register custom entity type using registerEntityTypeByQuery
     // differnt graphql servers cold be used for different entity types
     // resolver for testentity should be implemented on the graphql server provided
-    searchAdapter.registerEntityTypeByQuery(TEST_ENTITY_TYPE, {
+    searchAdapter.registerEntityTypeByQuery(ENTITY_TYPE, {
       url: 'http://localhost:8080/graphql/',
-      query: require('./queries/testentity.gql'),
+      query: require('./queries/wp-entity.gql'),
       queryProcessor: (query) => {
         // function that can modify the query each time before it's being executed
         return query
@@ -48,7 +48,7 @@ export function afterRegistration (Vue, config, store, isServer) {
     // prepare a SearchRequest object
     const Request = {
       store: storeView.storeCode, // TODO: add grouped product and bundled product support
-      type: TEST_ENTITY_TYPE,
+      type: ENTITY_TYPE,
       searchQuery: searchQuery,
       sort: ''
     }
