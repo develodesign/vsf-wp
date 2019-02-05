@@ -1,0 +1,8 @@
+query wp-entity ($filter: TestInput) {
+  testentity(
+    filter: $filter
+  )
+  {
+    hits
+  }
+}
