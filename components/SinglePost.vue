@@ -8,7 +8,7 @@
 export const SinglePost = {
   name: 'SinglePost',
   methods: {
-    loadPostData() {
+    loadPost() {
       this.$store.dispatch('wp/loadPost').then(res => {
         success(res)
       }).catch(err => {
