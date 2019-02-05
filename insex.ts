@@ -8,4 +8,4 @@ const moduleConfig: VueStorefrontModuleConfig = {
   afterRegistration
 }
 
-export const SampleCustomEntityGql = new VueStorefrontModule(moduleConfig)
+export const Wordpress = new VueStorefrontModule(moduleConfig)
