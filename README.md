@@ -1,6 +1,12 @@
 # vsf-wp
 Wordpress module for Vue Storefront based on GraphQL
 
+
+## Requirements
+Wordpress doesn't yet support GraphQL natively. 
+So to get started install following free open source Wordpress Plugin into your WP store https://github.com/wp-graphql/wp-graphql
+
+
 ## Installation
 
 ```shell
