@@ -14,11 +14,13 @@ export function afterRegistration (Vue, config, store, isServer) {
     // create graphQl searchAdapter
     let searchAdapter = await getSearchAdapter('graphql')
 
+    let graphqlConfig = config.wordpress.graphql
+
     // register custom entity type using registerEntityTypeByQuery
     // differnt graphql servers cold be used for different entity types
     // resolver for testentity should be implemented on the graphql server provided
     searchAdapter.registerEntityTypeByQuery(ENTITY_TYPE, {
-      url: 'http://localhost:8080/graphql/',
+      url: graphqlConfig.host + ':' +  graphqlConfig.port + '/graphql/',
       query: require('./queries/wp-entity.gql'),
       queryProcessor: (query) => {
         // function that can modify the query each time before it's being executed
