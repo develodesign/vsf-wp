@@ -18,7 +18,7 @@ Add settings to `vue-storefront/config/local.json`
 ```shell
 "wordpress": {
     "graphql":{
-      "host": "wp-graphql-host",
+      "host": "https://wp-host",
       "port": 8080
     }
   }
