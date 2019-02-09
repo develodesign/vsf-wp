@@ -3,7 +3,7 @@ Wordpress module for Vue Storefront based on GraphQL
 
 
 ## Requirements
-Wordpress doesn't yet support GraphQL natively. 
+Wordpress doesn't yet support GraphQL natively.
 So to get started install following free open source Wordpress Plugin into your WP store https://github.com/wp-graphql/wp-graphql
 
 
@@ -18,7 +18,7 @@ Add settings to `vue-storefront/config/local.json`
 ```shell
 "wordpress": {
     "graphql":{
-      "host": "localhost",
+      "host": "wp-graphql-host",
       "port": 8080
     }
   }
