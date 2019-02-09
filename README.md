@@ -18,8 +18,7 @@ Add settings to `vue-storefront/config/local.json`
 ```shell
 "wordpress": {
     "graphql":{
-      "host": "https://wp-host",
-      "port": 8080
+      "url": "https://you-wordpress-url/graphql"
     }
   }
 ```
@@ -35,4 +34,10 @@ let routes = [
   { name: 'posts', path: '/posts', component: Posts, props: {page: 'posts', title: 'Posts'} },
   { name: 'single-post', path: '/single-post', component: SinglePost, props: {page: 'posts', title: 'Single Post'} }
 ]
+```
+
+## Generate graphql scheme
+
+```shell
+npx get-graphql-schema https://you-wordpress-url/graphql > schema-wp.graphql
 ```

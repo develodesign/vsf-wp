@@ -8,20 +8,20 @@ const EXTENSION_KEY = 'wordpress'
 const ENTITY_TYPE = 'wp'
 
 export function afterRegistration (Vue, config, store, isServer) {
-  Vue.$on('application-after-init', async () => {
-    console.debug('Example of custom entity graphql extension')
+  console.log('Register wordpress module')
+
+  Vue.prototype.$bus.$on('servercart-after-diff', async () => {
+    console.log('Register wordpress entity graphql extension')
 
     // create graphQl searchAdapter
     let searchAdapter = await getSearchAdapter('graphql')
-
-    let graphqlConfig = config.wordpress.graphql
 
     // register custom entity type using registerEntityTypeByQuery
     // differnt graphql servers cold be used for different entity types
     // resolver for testentity should be implemented on the graphql server provided
     searchAdapter.registerEntityTypeByQuery(ENTITY_TYPE, {
-      url: graphqlConfig.host + ':' +  graphqlConfig.port + '/graphql/',
-      query: require('./queries/wp-entity.gql'),
+      url: config.wordpress.graphql.url,
+      query: require('../queries/entity.gql'),
       queryProcessor: (query) => {
         // function that can modify the query each time before it's being executed
         return query
@@ -36,7 +36,7 @@ export function afterRegistration (Vue, config, store, isServer) {
           if (resp.error) {
             throw new Error(JSON.stringify(resp.error))
           } else {
-            throw new Error('Unknown error with graphQl result in resultPorcessor for entity type \'category\'')
+            throw new Error('Unknown error with graphQl result in resultPorcessor for entity type \'wordpress\'')
           }
         }
       }
