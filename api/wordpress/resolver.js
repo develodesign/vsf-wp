@@ -1,10 +1,6 @@
 
 const resolver = {
-  Query: {
-    posts() {
-      return posts;
-    }
-  }
+  Post: {}
 };
 
 export default resolver;
