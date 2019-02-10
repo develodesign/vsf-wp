@@ -1,74 +1,6344 @@
+schema {
+  query: RootQuery
+  mutation: RootMutation
+}
+
+# Avatars are profile images for users. WordPress by default uses the Gravatar service to host and fetch avatars from.
+type Avatar {
+  # URL for the default image or a default type. Accepts &#039;404&#039; (return a
+  # 404 instead of a default image), &#039;retro&#039; (8bit),
+  # &#039;monsterid&#039; (monster), &#039;wavatar&#039; (cartoon face),
+  # &#039;indenticon&#039; (the &#039;quilt&#039;), &#039;mystery&#039;,
+  # &#039;mm&#039;, or &#039;mysteryman&#039; (The Oyster Man), &#039;blank&#039;
+  # (transparent GIF), or &#039;gravatar_default&#039; (the Gravatar logo).
+  default: String @deprecated
+
+  # HTML attributes to insert in the IMG element. Is not sanitized.
+  extraAttr: String @deprecated
+
+  # Whether to always show the default image, never the Gravatar.
+  forceDefault: Boolean @deprecated
+
+  # Whether the avatar was successfully found.
+  foundAvatar: Boolean @deprecated
+
+  # Height of the avatar image.
+  height: Int @deprecated
+
+  # What rating to display avatars up to. Accepts &#039;G&#039;, &#039;PG&#039;,
+  # &#039;R&#039;, &#039;X&#039;, and are judged in that order.
+  rating: String @deprecated
+
+  # Type of url scheme to use. Typically HTTP vs. HTTPS.
+  scheme: String @deprecated
+
+  # The size of the avatar in pixels. A value of 96 will match a 96px x 96px gravatar image.
+  size: Int @deprecated
+
+  # URL for the gravatar image source.
+  url: String @deprecated
+
+  # Width of the avatar image.
+  width: Int @deprecated
+}
+
+# What rating to display avatars up to. Accepts 'G', 'PG', 'R', 'X', and are
+# judged in that order. Default is the value of the 'avatar_rating' option
+enum AvatarRatingEnum {
+  G
+  PG
+  R
+  X
+}
+
+# The category type
+type Category implements Node {
+  # The ancestors of the object
+  ancestors: [Category] @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  categoryId: Int @deprecated
+
+  # Connection between the category type and the category type
+  children(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: CategoryToCategoryConnectionWhereArgs
+  ): CategoryToCategoryConnection @deprecated
+
+  # The number of objects connected to the object
+  count: Int @deprecated
+
+  # The description of the object
+  description: String @deprecated
+
+  # The global ID for the category
+  id: ID! @deprecated
+
+  # The link to the term
+  link: String @deprecated
+
+  # The human friendly name of the object.
+  name: String @deprecated
+
+  # The parent object
+  parent: Category @deprecated
+
+  # Connection between the category type and the category type
+  posts(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: CategoryToPostConnectionWhereArgs
+  ): CategoryToPostConnection @deprecated
+
+  # An alphanumeric identifier for the object unique to its type.
+  slug: String @deprecated
+
+  # The name of the taxonomy this term belongs to
+  taxonomy: Taxonomy @deprecated
+
+  # The ID of the term group that this term object belongs to
+  termGroupId: Int @deprecated
+
+  # The taxonomy ID that the object is associated with
+  termTaxonomyId: Int @deprecated
+}
+
+# Connection between the category type and the category type
+type CategoryToCategoryConnection {
+  # Edges for the CategoryToCategoryConnection connection
+  edges: [CategoryToCategoryConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Category] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  taxonomyInfo: Taxonomy @deprecated
+}
+
+# An edge in a connection
+type CategoryToCategoryConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Category @deprecated
+}
+
+# Arguments for filtering the CategoryToCategoryConnection connection
+input CategoryToCategoryConnectionWhereArgs {
+  # Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  cacheDomain: String
+
+  # True to limit results to terms that have no children. This parameter has no
+  # effect on non-hierarchical taxonomies. Default false.
+  childless: Boolean
+
+  # Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  childOf: Int
+
+  # Retrieve terms where the description is LIKE the input value. Default empty.
+  descriptionLike: String
+
+  # Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  exclude: [ID]
+
+  # Array of term ids to exclude along with all of their descendant terms. If
+  # $include is non-empty, $exclude_tree is ignored. Default empty array.
+  excludeTree: [ID]
+
+  # Whether to hide terms not assigned to any posts. Accepts true or false. Default true
+  hideEmpty: Boolean
+
+  # Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  hierarchical: Boolean
+
+  # Array of term ids to include. Default empty array.
+  include: [ID]
+
+  # Array of names to return term(s) for. Default empty.
+  name: [String]
+
+  # Retrieve terms where the name is LIKE the input value. Default empty.
+  nameLike: String
+
+  # Array of object IDs. Results will be limited to terms associated with these objects.
+  objectIds: [ID]
+
+  # Field(s) to order terms by. Defaults to 'name'.
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  # Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  padCounts: Boolean
+
+  # Parent term ID to retrieve direct-child terms of. Default empty.
+  parent: Int
+
+  # Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  search: String
+
+  # Default false. If true, only the items connected to the source item will be
+  # returned. If false, all items will be returned regardless of connection to the source
+  shouldOnlyIncludeConnectedItems: Boolean
+
+  # Default false. If true, the connection will be output in a flat list instead
+  # of the hierarchical list. So child terms will be output in the same level as
+  # the parent terms
+  shouldOutputInFlatList: Boolean
+
+  # Array of slugs to return term(s) for. Default empty.
+  slug: [String]
+
+  # Array of term taxonomy IDs, to match when querying terms.
+  termTaxonomId: [ID]
+
+  # Whether to prime meta caches for matched terms. Default true.
+  updateTermMetaCache: Boolean
+}
+
+# Connection between the category type and the category type
+type CategoryToPostConnection {
+  # Edges for the CategoryToPostConnection connection
+  edges: [CategoryToPostConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Post] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type CategoryToPostConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Post @deprecated
+}
+
+# Arguments for filtering the CategoryToPostConnection connection
+input CategoryToPostConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# A Comment object
+type Comment implements Node {
+  # User agent used to post the comment. This field is equivalent to
+  # WP_Comment-&gt;comment_agent and the value matching the
+  # &quot;comment_agent&quot; column in SQL.
+  agent: String @deprecated
+
+  # The approval status of the comment. This field is equivalent to
+  # WP_Comment-&gt;comment_approved and the value matching the
+  # &quot;comment_approved&quot; column in SQL.
+  approved: String @deprecated
+
+  # The author of the comment
+  author: CommentAuthorUnion @deprecated
+
+  # IP address for the author. This field is equivalent to
+  # WP_Comment-&gt;comment_author_IP and the value matching the
+  # &quot;comment_author_IP&quot; column in SQL.
+  authorIp: String @deprecated
+
+  # Connection between the Comment type and the Comment type
+  children(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: CommentToCommentConnectionWhereArgs
+  ): CommentToCommentConnection @deprecated
+
+  # The object the comment was added to
+  commentedOn: PostObjectUnion @deprecated
+
+  # ID for the comment, unique among comments.
+  commentId: Int @deprecated
+
+  # Content of the comment. This field is equivalent to
+  # WP_Comment-&gt;comment_content and the value matching the
+  # &quot;comment_content&quot; column in SQL.
+  content(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # Date the comment was posted in local time. This field is equivalent to
+  # WP_Comment-&gt;date and the value matching the &quot;date&quot; column in SQL.
+  date: String @deprecated
+
+  # Date the comment was posted in GMT. This field is equivalent to
+  # WP_Comment-&gt;date_gmt and the value matching the &quot;date_gmt&quot; column in SQL.
+  dateGmt: String @deprecated
+
+  # The globally unique identifier for the user
+  id: ID! @deprecated
+
+  # Karma value for the comment. This field is equivalent to
+  # WP_Comment-&gt;comment_karma and the value matching the
+  # &quot;comment_karma&quot; column in SQL.
+  karma: Int @deprecated
+
+  # Parent comment of current comment. This field is equivalent to the WP_Comment
+  # instance matching the WP_Comment-&gt;comment_parent ID.
+  parent: Comment @deprecated
+
+  # Type of comment. This field is equivalent to WP_Comment-&gt;comment_type and
+  # the value matching the &quot;comment_type&quot; column in SQL.
+  type: String @deprecated
+}
+
+# A Comment Author object
+type CommentAuthor implements Node {
+  # The email for the comment author
+  email: String @deprecated
+
+  # The globally unique identifier for the Comment Author user
+  id: ID! @deprecated
+
+  # The name for the comment author.
+  name: String @deprecated
+
+  # The url the comment author.
+  url: String @deprecated
+}
+
+union CommentAuthorUnion = User | CommentAuthor
+
+# Options for ordering the connection
+enum CommentsConnectionOrderbyEnum {
+  COMMENT_AGENT
+  COMMENT_APPROVED
+  COMMENT_AUTHOR
+  COMMENT_AUTHOR_EMAIL
+  COMMENT_AUTHOR_IP
+  COMMENT_AUTHOR_URL
+  COMMENT_CONTENT
+  COMMENT_DATE
+  COMMENT_DATE_GMT
+  COMMENT_ID
+  COMMENT_IN
+  COMMENT_KARMA
+  COMMENT_PARENT
+  COMMENT_POST_ID
+  COMMENT_TYPE
+  USER_ID
+}
+
+# Connection between the Comment type and the Comment type
+type CommentToCommentConnection {
+  # Edges for the CommentToCommentConnection connection
+  edges: [CommentToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type CommentToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the CommentToCommentConnection connection
+input CommentToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Input for the createCategory mutation
+input CreateCategoryInput {
+  # The slug that the category will be an alias of
+  aliasOf: String
+  clientMutationId: String!
+
+  # The description of the category object
+  description: String
+
+  # The name of the category object to mutate
+  name: String!
+
+  # The ID of the category that should be set as the parent
+  parentId: ID
+
+  # If this argument exists then the slug will be checked to see if it is not an
+  # existing valid term. If that check succeeds (it is not a valid term), then it
+  # is added and the term id is given. If it fails, then a check is made to
+  # whether the taxonomy is hierarchical and the parent argument is not empty. If
+  # the second check succeeds, the term will be inserted and the term id will be
+  # given. If the slug argument is empty, then it will be calculated from the term name.
+  slug: String
+}
+
+# The payload for the createCategory mutation
+type CreateCategoryPayload {
+  # The created category
+  category: Category @deprecated
+  clientMutationId: String! @deprecated
+}
+
+# Input for the createComment mutation
+input CreateCommentInput {
+  # User agent used to post the comment.
+  agent: String
+
+  # The approval status of the comment.
+  approved: String
+
+  # The name of the comment's author.
+  author: String
+
+  # The email of the comment's author.
+  authorEmail: String
+
+  # IP address for the comment's author.
+  authorIp: String
+
+  # The url of the comment's author.
+  authorUrl: String
+  clientMutationId: String!
+
+  # Content of the comment.
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day ( e.g.
+  # 01/31/2017 ) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # Parent comment of current comment.
+  parent: ID
+
+  # The ID of the post the comment belongs to.
+  postId: Int
+
+  # Type of comment.
+  type: String
+
+  # The userID of the comment's author.
+  userId: Int
+}
+
+# The payload for the createComment mutation
+type CreateCommentPayload {
+  clientMutationId: String! @deprecated
+
+  # The comment that was created
+  comment: Comment @deprecated
+}
+
+# Input for the createMediaItem mutation
+input CreateMediaItemInput {
+  # Alternative text to display when mediaItem is not displayed
+  altText: String
+
+  # The userId to assign as the author of the mediaItem
+  authorId: ID
+
+  # The caption for the mediaItem
+  caption: String
+  clientMutationId: String!
+
+  # The comment status for the mediaItem
+  commentStatus: String
+
+  # The date of the mediaItem
+  date: String
+
+  # The date (in GMT zone) of the mediaItem
+  dateGmt: String
+
+  # Description of the mediaItem
+  description: String
+
+  # The file name of the mediaItem
+  filePath: String
+
+  # The file type of the mediaItem
+  fileType: MimeTypeEnum
+
+  # The WordPress post ID or the graphQL postId of the parent object
+  parentId: ID
+
+  # The ping status for the mediaItem
+  pingStatus: String
+
+  # The slug of the mediaItem
+  slug: String
+
+  # The status of the mediaItem
+  status: MediaItemStatusEnum
+
+  # The title of the mediaItem
+  title: String
+}
+
+# The payload for the createMediaItem mutation
+type CreateMediaItemPayload {
+  clientMutationId: String! @deprecated
+  mediaItem: MediaItem @deprecated
+}
+
+# Input for the createPage mutation
+input CreatePageInput {
+  # The userId to assign as the author of the post
+  authorId: ID
+  clientMutationId: String!
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int
+
+  # The comment status for the object
+  commentStatus: String
+
+  # The content of the object
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day (e.g.
+  # 01/31/2017) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # The excerpt of the object
+  excerpt: String
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int
+
+  # If the post is an attachment or a media file, this field will carry the
+  # corresponding MIME type. This field is equivalent to the value of
+  # WP_Post->post_mime_type and the post_mime_type column in the "post_objects"
+  # database table.
+  mimeType: MimeTypeEnum
+
+  # The ID of the parent object
+  parentId: ID
+
+  # The password used to protect the content of the object
+  password: String
+
+  # URLs that have been pinged.
+  pinged: [String]
+
+  # The ping status for the object
+  pingStatus: String
+
+  # The slug of the object
+  slug: String
+
+  # The status of the object
+  status: PostStatusEnum
+
+  # The title of the post
+  title: String
+
+  # URLs queued to be pinged.
+  toPing: [String]
+}
+
+# The payload for the createPage mutation
+type CreatePagePayload {
+  clientMutationId: String! @deprecated
+  page: Page @deprecated
+}
+
+# Input for the createPost mutation
+input CreatePostInput {
+  # The userId to assign as the author of the post
+  authorId: ID
+
+  # Set connections between the post and categories
+  categories: PostCategoriesInput
+  clientMutationId: String!
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int
+
+  # The comment status for the object
+  commentStatus: String
+
+  # The content of the object
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day (e.g.
+  # 01/31/2017) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # The excerpt of the object
+  excerpt: String
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int
+
+  # If the post is an attachment or a media file, this field will carry the
+  # corresponding MIME type. This field is equivalent to the value of
+  # WP_Post->post_mime_type and the post_mime_type column in the "post_objects"
+  # database table.
+  mimeType: MimeTypeEnum
+
+  # The ID of the parent object
+  parentId: ID
+
+  # The password used to protect the content of the object
+  password: String
+
+  # URLs that have been pinged.
+  pinged: [String]
+
+  # The ping status for the object
+  pingStatus: String
+
+  # The slug of the object
+  slug: String
+
+  # The status of the object
+  status: PostStatusEnum
+
+  # Set connections between the post and tags
+  tags: PostTagsInput
+
+  # The title of the post
+  title: String
+
+  # URLs queued to be pinged.
+  toPing: [String]
+}
+
+# The payload for the createPost mutation
+type CreatePostPayload {
+  clientMutationId: String! @deprecated
+  post: Post @deprecated
+}
+
+# Input for the createTag mutation
+input CreateTagInput {
+  # The slug that the post_tag will be an alias of
+  aliasOf: String
+  clientMutationId: String!
+
+  # The description of the post_tag object
+  description: String
+
+  # The name of the post_tag object to mutate
+  name: String!
+
+  # If this argument exists then the slug will be checked to see if it is not an
+  # existing valid term. If that check succeeds (it is not a valid term), then it
+  # is added and the term id is given. If it fails, then a check is made to
+  # whether the taxonomy is hierarchical and the parent argument is not empty. If
+  # the second check succeeds, the term will be inserted and the term id will be
+  # given. If the slug argument is empty, then it will be calculated from the term name.
+  slug: String
+}
+
+# The payload for the createTag mutation
+type CreateTagPayload {
+  clientMutationId: String! @deprecated
+
+  # The created post_tag
+  tag: Tag @deprecated
+}
+
+# Input for the createUser mutation
+input CreateUserInput {
+  # User's AOL IM account.
+  aim: String
+  clientMutationId: String!
+
+  # A string containing content about the user.
+  description: String
+
+  # A string that will be shown on the site. Defaults to user's username. It is
+  # likely that you will want to change this, for both appearance and security
+  # through obscurity (that is if you dont use and delete the default admin user).
+  displayName: String
+
+  # A string containing the user's email address.
+  email: String
+
+  # 	The user's first name.
+  firstName: String
+
+  # User's Jabber account.
+  jabber: String
+
+  # The user's last name.
+  lastName: String
+
+  # User's locale.
+  locale: String
+
+  # A string that contains a URL-friendly name for the user. The default is the user's username.
+  nicename: String
+
+  # The user's nickname, defaults to the user's username.
+  nickname: String
+
+  # A string that contains the plain text password for the user.
+  password: String
+
+  # The date the user registered. Format is Y-m-d H:i:s.
+  registered: String
+
+  # A string for whether to enable the rich editor or not. False if not empty.
+  richEditing: String
+
+  # An array of roles to be assigned to the user.
+  roles: [String]
+
+  # A string that contains the user's username for logging in.
+  username: String!
+
+  # A string containing the user's URL for the user's web site.
+  websiteUrl: String
+
+  # User's Yahoo IM account.
+  yim: String
+}
+
+# The payload for the createUser mutation
+type CreateUserPayload {
+  clientMutationId: String! @deprecated
+  user: User @deprecated
+}
+
+# Date values
+input DateInput {
+  # Day of the month (from 1 to 31)
+  day: Int
+
+  # Month number (from 1 to 12)
+  month: Int
+
+  # 4 digit year (e.g. 2017)
+  year: Int
+}
+
+# Filter the connection based on input
+input DateQueryInput {
+  after: DateInput
+  before: DateInput
+
+  # Column to query against
+  column: PostObjectsConnectionDateColumnEnum
+
+  # For after/before, whether exact value should be matched or not
+  compare: String
+
+  # Day of the month (from 1 to 31)
+  day: Int
+
+  # Hour (from 0 to 23)
+  hour: Int
+
+  # For after/before, whether exact value should be matched or not
+  inclusive: Boolean
+
+  # Minute (from 0 to 59)
+  minute: Int
+
+  # Month number (from 1 to 12)
+  month: Int
+
+  # OR or AND, how the sub-arrays should be compared
+  relation: RelationEnum
+
+  # Second (0 to 59)
+  second: Int
+
+  # Week of the year (from 0 to 53)
+  week: Int
+
+  # 4 digit year (e.g. 2017)
+  year: Int
+}
+
+# Input for the deleteCategory mutation
+input DeleteCategoryInput {
+  clientMutationId: String!
+
+  # The ID of the category to delete
+  id: ID!
+}
+
+# The payload for the deleteCategory mutation
+type DeleteCategoryPayload {
+  # The deteted term object
+  category: Category @deprecated
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted object
+  deletedId: ID @deprecated
+}
+
+# Input for the deleteComment mutation
+input DeleteCommentInput {
+  clientMutationId: String!
+
+  # Whether the comment should be force deleted instead of being moved to the trash
+  forceDelete: Boolean
+
+  # The deleted comment ID
+  id: ID!
+}
+
+# The payload for the deleteComment mutation
+type DeleteCommentPayload {
+  clientMutationId: String! @deprecated
+
+  # The deleted comment object
+  comment: Comment @deprecated
+
+  # The deleted comment ID
+  deletedId: ID @deprecated
+}
+
+# Input for the deleteMediaItem mutation
+input DeleteMediaItemInput {
+  clientMutationId: String!
+
+  # Whether the mediaItem should be force deleted instead of being moved to the trash
+  forceDelete: Boolean
+
+  # The ID of the mediaItem to delete
+  id: ID!
+}
+
+# The payload for the deleteMediaItem mutation
+type DeleteMediaItemPayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted mediaItem
+  deletedId: ID @deprecated
+
+  # The mediaItem before it was deleted
+  mediaItem: MediaItem @deprecated
+}
+
+# Input for the deletePage mutation
+input DeletePageInput {
+  clientMutationId: String!
+
+  # Whether the object should be force deleted instead of being moved to the trash
+  forceDelete: Boolean
+
+  # The ID of the page to delete
+  id: ID!
+}
+
+# The payload for the deletePage mutation
+type DeletePagePayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted object
+  deletedId: ID @deprecated
+
+  # The object before it was deleted
+  page: Page @deprecated
+}
+
+# Input for the deletePost mutation
+input DeletePostInput {
+  clientMutationId: String!
+
+  # Whether the object should be force deleted instead of being moved to the trash
+  forceDelete: Boolean
+
+  # The ID of the post to delete
+  id: ID!
+}
+
+# The payload for the deletePost mutation
+type DeletePostPayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted object
+  deletedId: ID @deprecated
+
+  # The object before it was deleted
+  post: Post @deprecated
+}
+
+# Input for the deleteRevision mutation
+input DeleteRevisionInput {
+  clientMutationId: String!
+
+  # Whether the object should be force deleted instead of being moved to the trash
+  forceDelete: Boolean
+
+  # The ID of the revision to delete
+  id: ID!
+}
+
+# The payload for the deleteRevision mutation
+type DeleteRevisionPayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted object
+  deletedId: ID @deprecated
+
+  # The object before it was deleted
+  revision: Revision @deprecated
+}
+
+# Input for the deleteTag mutation
+input DeleteTagInput {
+  clientMutationId: String!
+
+  # The ID of the tag to delete
+  id: ID!
+}
+
+# The payload for the deleteTag mutation
+type DeleteTagPayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the deleted object
+  deletedId: ID @deprecated
+
+  # The deteted term object
+  tag: Tag @deprecated
+}
+
+# Input for the deleteUser mutation
+input DeleteUserInput {
+  clientMutationId: String!
+
+  # The ID of the user you want to delete
+  id: ID!
+
+  # Reassign posts and links to new User ID.
+  reassignId: ID
+}
+
+# The payload for the deleteUser mutation
+type DeleteUserPayload {
+  clientMutationId: String! @deprecated
+
+  # The ID of the user that you just deleted
+  deletedId: ID @deprecated
+
+  # The deleted user object
+  user: User @deprecated
+}
+
+# The discussion setting type
+type DiscussionSettings {
+  # Allow people to post comments on new articles.
+  defaultCommentStatus: String @deprecated
+
+  # Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+  defaultPingStatus: String @deprecated
+}
+
+# Info on whether the object is locked by another user editing it
+type EditLock {
+  # The time when the object was last edited
+  editTime: String @deprecated
+
+  # The user that most recently edited the object
+  user: User @deprecated
+}
+
+# The general setting type
+type GeneralSettings {
+  # A date format for all date strings.
+  dateFormat: String @deprecated
+
+  # Site tagline.
+  description: String @deprecated
+
+  # This address is used for admin purposes, like new user notification.
+  email: String @deprecated
+
+  # WordPress locale code.
+  language: String @deprecated
+
+  # A day number of the week that the week should start on.
+  startOfWeek: Int @deprecated
+
+  # A time format for all time strings.
+  timeFormat: String @deprecated
+
+  # A city in the same timezone as you.
+  timezone: String @deprecated
+
+  # Site title.
+  title: String @deprecated
+
+  # Site URL.
+  url: String @deprecated
+}
+
+# File details for a Media Item
+type MediaDetails {
+  # The height of the mediaItem
+  file: String @deprecated
+
+  # The height of the mediaItem
+  height: Int @deprecated
+  meta: MediaItemMeta @deprecated
+
+  # The available sizes of the mediaItem
+  sizes: [MediaSize] @deprecated
+
+  # The width of the mediaItem
+  width: Int @deprecated
+}
+
+# The mediaItem type
+type MediaItem implements Node {
+  # Alternative text to display when resource is not displayed
+  altText: String @deprecated
+
+  # Ancestors of the object
+  ancestors(
+    # The types of ancestors to check for. Defaults to the same type as the current object
+    types: [PostTypeEnum]
+  ): [PostObjectUnion] @deprecated
+
+  # The author field will return a queryable User type matching the post&#039;s author.
+  author: User @deprecated
+
+  # The caption for the resource
+  caption: String @deprecated
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int @deprecated
+
+  # Connection between the mediaItem type and the mediaItem type
+  comments(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: MediaItemToCommentConnectionWhereArgs
+  ): MediaItemToCommentConnection @deprecated
+
+  # Whether the comments are open or closed for this particular post.
+  commentStatus: String @deprecated
+
+  # The content of the post.
+  content(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated(reason: "Use the description field instead of content")
+
+  # Post publishing date.
+  date: String @deprecated
+
+  # The publishing date set in GMT.
+  dateGmt: String @deprecated
+
+  # Description of the image (stored as post_content)
+  description: String @deprecated
+
+  # The desired slug of the post
+  desiredSlug: String @deprecated
+
+  # The user that most recently edited the object
+  editLast: User @deprecated
+
+  # If a user has edited the object within the past 15 seconds, this will return
+  # the user and the time they last edited. Null if the edit lock doesn&#039;t
+  # exist or is greater than 15 seconds
+  editLock: EditLock @deprecated
+
+  # The RSS enclosure for the object
+  enclosure: String @deprecated
+
+  # The excerpt of the post.
+  excerpt(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated(reason: "Use the caption field instead of excerpt")
+
+  # The global unique identifier for this post. This currently matches the value
+  # stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot;
+  # database table.
+  guid: String @deprecated
+
+  # The globally unique ID for the object
+  id: ID! @deprecated
+
+  # The permalink of the post
+  link: String @deprecated
+
+  # Details about the mediaItem
+  mediaDetails: MediaDetails @deprecated
+
+  # Type of resource
+  mediaType: String @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  mediaItemId: Int! @deprecated
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int @deprecated
+
+  # The mime type of the mediaItem
+  mimeType: String @deprecated
+
+  # The local modified time for a post. If a post was recently updated the
+  # modified field will change to match the corresponding time.
+  modified: String @deprecated
+
+  # The GMT modified time for a post. If a post was recently updated the modified
+  # field will change to match the corresponding time in GMT.
+  modifiedGmt: String @deprecated
+
+  # The parent of the object. The parent object can be of various types
+  parent: PostObjectUnion @deprecated
+
+  # URLs that have been pinged.
+  pinged: [String] @deprecated
+
+  # Whether the pings are open or closed for this particular post.
+  pingStatus: String @deprecated
+
+  # The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name
+  # field and the post_name column in the database for the
+  # &quot;post_objects&quot; table.
+  slug: String @deprecated
+
+  # Url of the mediaItem
+  sourceUrl: String @deprecated
+
+  # The current status of the object
+  status: String @deprecated
+
+  # Terms connected to the mediaItem
+  termNames(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # Terms connected to the mediaItem
+  terms(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [TermObjectUnion] @deprecated
+
+  # Terms connected to the mediaItem
+  termSlugs(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+  title(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # URLs queued to be pinged.
+  toPing: [String] @deprecated
+
+  # URI path for the resource
+  uri: String @deprecated
+}
+
+# Meta connected to a MediaItem
+type MediaItemMeta {
+  aperture: Float @deprecated
+  camera: String @deprecated
+  caption: String @deprecated
+  copyright: String @deprecated
+  createdTimestamp: Int @deprecated
+  credit: String @deprecated
+  focalLength: Int @deprecated
+  iso: Int @deprecated
+  keywords: [String] @deprecated
+  orientation: String @deprecated
+  shutterSpeed: Float @deprecated
+  title: String @deprecated
+}
+
+# The status of the media item object.
+enum MediaItemStatusEnum {
+  # Objects with the auto-draft status
+  AUTO_DRAFT
+
+  # Objects with the inherit status
+  INHERIT
+
+  # Objects with the private status
+  PRIVATE
+
+  # Objects with the trash status
+  TRASH
+}
+
+# Connection between the mediaItem type and the mediaItem type
+type MediaItemToCommentConnection {
+  # Edges for the MediaItemToCommentConnection connection
+  edges: [MediaItemToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type MediaItemToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the MediaItemToCommentConnection connection
+input MediaItemToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Details of an available size for a media item
+type MediaSize {
+  # The file of the for the referenced size
+  file: String @deprecated
+
+  # The height of the for the referenced size
+  height: String @deprecated
+
+  # The mime type of the resource
+  mimeType: String @deprecated
+
+  # The referenced size name
+  name: String @deprecated
+
+  # The url of the for the referenced size
+  sourceUrl: String @deprecated
+
+  # The width of the for the referenced size
+  width: String @deprecated
+}
+
+# Menus are the containers for navigation items. Menus can be assigned to menu
+# locations, which are typically registered by the active theme.
+type Menu {
+  # The number of items in the menu
+  count: Int @deprecated
+
+  # ID of the nav menu.
+  id: ID! @deprecated
+
+  # Connection between the Menu type and the Menu type
+  menuItems(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: MenuToMenuItemConnectionWhereArgs
+  ): MenuToMenuItemConnection @deprecated
+
+  # WP ID of the nav menu.
+  menuId: Int @deprecated
+
+  # Display name of the menu. Equivalent to WP_Term-&gt;name.
+  name: String @deprecated
+
+  # The url friendly name of the menu. Equivalent to WP_Term-&gt;slug
+  slug: String @deprecated
+}
+
+# Navigation menu items are the individual items assigned to a menu. These are rendered as the links in a navigation menu.
+type MenuItem {
+  # Connection between the MenuItem type and the MenuItem type
+  childItems(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: MenuItemToMenuItemConnectionWhereArgs
+  ): MenuItemToMenuItemConnection @deprecated
+
+  # The object connected to this menu item.
+  connectedObject: MenuItemObjectUnion @deprecated
+
+  # Class attribute for the menu item link
+  cssClasses: [String] @deprecated
+
+  # Description of the menu item.
+  description: String @deprecated
+
+  # Relay ID of the menu item.
+  id: ID! @deprecated
+
+  # Label or title of the menu item.
+  label: String @deprecated
+
+  # Link relationship (XFN) of the menu item.
+  linkRelationship: String @deprecated
+
+  # WP ID of the menu item.
+  menuItemId: Int @deprecated
+
+  # Target attribute for the menu item link.
+  target: String @deprecated
+
+  # Title attribute for the menu item link
+  title: String @deprecated
+
+  # URL or destination of the menu item.
+  url: String @deprecated
+}
+
+union MenuItemObjectUnion = Post | Page | Category | Tag | MenuItem
+
+# Connection between the MenuItem type and the MenuItem type
+type MenuItemToMenuItemConnection {
+  # Edges for the MenuItemToMenuItemConnection connection
+  edges: [MenuItemToMenuItemConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [MenuItem] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type MenuItemToMenuItemConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: MenuItem @deprecated
+}
+
+# Arguments for filtering the MenuItemToMenuItemConnection connection
+input MenuItemToMenuItemConnectionWhereArgs {
+  # The ID of the object
+  id: Int
+
+  # The menu location for the menu being queried
+  location: MenuLocationEnum
+}
+
+# Registered menu locations
+enum MenuLocationEnum {
+  AMP_FOOTER_MENU
+  AMP_MENU
+  FOOTER_LINKS
+  HEADER_MENU
+  MOBILE_MENU
+  NEWS_MENU
+  PORTFOLIO_MENU
+}
+
+# Connection between the Menu type and the Menu type
+type MenuToMenuItemConnection {
+  # Edges for the MenuToMenuItemConnection connection
+  edges: [MenuToMenuItemConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [MenuItem] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type MenuToMenuItemConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: MenuItem @deprecated
+}
+
+# Arguments for filtering the MenuToMenuItemConnection connection
+input MenuToMenuItemConnectionWhereArgs {
+  # The ID of the object
+  id: Int
+
+  # The menu location for the menu being queried
+  location: MenuLocationEnum
+}
+
+# The MimeType of the object
+enum MimeTypeEnum {
+  APPLICATION_JAVA
+  APPLICATION_MSWORD
+  APPLICATION_OCTET_STREAM
+  APPLICATION_ONENOTE
+  APPLICATION_OXPS
+  APPLICATION_PDF
+  APPLICATION_RAR
+  APPLICATION_RTF
+  APPLICATION_TTAF_XML
+  APPLICATION_VND_APPLE_KEYNOTE
+  APPLICATION_VND_APPLE_NUMBERS
+  APPLICATION_VND_APPLE_PAGES
+  APPLICATION_VND_MS_ACCESS
+  APPLICATION_VND_MS_EXCEL
+  APPLICATION_VND_MS_EXCEL_ADDIN_MACROENABLED_12
+  APPLICATION_VND_MS_EXCEL_SHEET_BINARY_MACROENABLED_12
+  APPLICATION_VND_MS_EXCEL_SHEET_MACROENABLED_12
+  APPLICATION_VND_MS_EXCEL_TEMPLATE_MACROENABLED_12
+  APPLICATION_VND_MS_POWERPOINT
+  APPLICATION_VND_MS_POWERPOINT_ADDIN_MACROENABLED_12
+  APPLICATION_VND_MS_POWERPOINT_PRESENTATION_MACROENABLED_12
+  APPLICATION_VND_MS_POWERPOINT_SLIDESHOW_MACROENABLED_12
+  APPLICATION_VND_MS_POWERPOINT_SLIDE_MACROENABLED_12
+  APPLICATION_VND_MS_POWERPOINT_TEMPLATE_MACROENABLED_12
+  APPLICATION_VND_MS_PROJECT
+  APPLICATION_VND_MS_WORD_DOCUMENT_MACROENABLED_12
+  APPLICATION_VND_MS_WORD_TEMPLATE_MACROENABLED_12
+  APPLICATION_VND_MS_WRITE
+  APPLICATION_VND_MS_XPSDOCUMENT
+  APPLICATION_VND_OASIS_OPENDOCUMENT_CHART
+  APPLICATION_VND_OASIS_OPENDOCUMENT_DATABASE
+  APPLICATION_VND_OASIS_OPENDOCUMENT_FORMULA
+  APPLICATION_VND_OASIS_OPENDOCUMENT_GRAPHICS
+  APPLICATION_VND_OASIS_OPENDOCUMENT_PRESENTATION
+  APPLICATION_VND_OASIS_OPENDOCUMENT_SPREADSHEET
+  APPLICATION_VND_OASIS_OPENDOCUMENT_TEXT
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_PRESENTATION
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDE
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_SLIDESHOW
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_PRESENTATIONML_TEMPLATE
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_SHEET
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_SPREADSHEETML_TEMPLATE
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_DOCUMENT
+  APPLICATION_VND_OPENXMLFORMATS_OFFICEDOCUMENT_WORDPROCESSINGML_TEMPLATE
+  APPLICATION_WORDPERFECT
+  APPLICATION_X_7Z_COMPRESSED
+  APPLICATION_X_GZIP
+  APPLICATION_X_TAR
+  APPLICATION_ZIP
+  AUDIO_AAC
+  AUDIO_FLAC
+  AUDIO_MIDI
+  AUDIO_MPEG
+  AUDIO_OGG
+  AUDIO_WAV
+  AUDIO_X_MATROSKA
+  AUDIO_X_MS_WAX
+  AUDIO_X_MS_WMA
+  AUDIO_X_REALAUDIO
+  IMAGE_BMP
+  IMAGE_GIF
+  IMAGE_JPEG
+  IMAGE_PNG
+  IMAGE_SVG_XML
+  IMAGE_TIFF
+  IMAGE_X_ICON
+  TEXT_CALENDAR
+  TEXT_CSS
+  TEXT_CSV
+  TEXT_PLAIN
+  TEXT_RICHTEXT
+  TEXT_TAB_SEPARATED_VALUES
+  TEXT_VTT
+  VIDEO_3GPP
+  VIDEO_3GPP2
+  VIDEO_AVI
+  VIDEO_DIVX
+  VIDEO_MP4
+  VIDEO_MPEG
+  VIDEO_OGG
+  VIDEO_QUICKTIME
+  VIDEO_WEBM
+  VIDEO_X_FLV
+  VIDEO_X_MATROSKA
+  VIDEO_X_MS_ASF
+  VIDEO_X_MS_WM
+  VIDEO_X_MS_WMV
+  VIDEO_X_MS_WMX
+}
+
+# An object with an ID
 interface Node {
-# The id of the object
-id: ID!
+  # The id of the object
+  id: ID!
 }
 
-enum PostObjectFieldFormatEnum {
-# Provide the field value directly from database
-RAW
-# Apply the default WordPress rendering
-RENDERED
+# The cardinality of the connection order
+enum OrderEnum {
+  ASC
+  DESC
 }
 
-union PostObjectUnion = Post
+# The page type
+type Page implements Node {
+  # Ancestors of the object
+  ancestors(
+    # The types of ancestors to check for. Defaults to the same type as the current object
+    types: [PostTypeEnum]
+  ): [PostObjectUnion] @deprecated
 
+  # The author field will return a queryable User type matching the post&#039;s author.
+  author: User @deprecated
+
+  # Connection between the page type and the page type
+  childPages(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: PageToPageConnectionWhereArgs
+  ): PageToPageConnection @deprecated
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int @deprecated
+
+  # Connection between the page type and the page type
+  comments(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: PageToCommentConnectionWhereArgs
+  ): PageToCommentConnection @deprecated
+
+  # Whether the comments are open or closed for this particular post.
+  commentStatus: String @deprecated
+
+  # The content of the post.
+  content(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # Post publishing date.
+  date: String @deprecated
+
+  # The publishing date set in GMT.
+  dateGmt: String @deprecated
+
+  # The desired slug of the post
+  desiredSlug: String @deprecated
+
+  # The user that most recently edited the object
+  editLast: User @deprecated
+
+  # If a user has edited the object within the past 15 seconds, this will return
+  # the user and the time they last edited. Null if the edit lock doesn&#039;t
+  # exist or is greater than 15 seconds
+  editLock: EditLock @deprecated
+
+  # The RSS enclosure for the object
+  enclosure: String @deprecated
+
+  # The excerpt of the post.
+  excerpt(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # The featured image for the object
+  featuredImage: MediaItem @deprecated
+
+  # The global unique identifier for this post. This currently matches the value
+  # stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot;
+  # database table.
+  guid: String @deprecated
+
+  # The globally unique ID for the object
+  id: ID! @deprecated
+
+  # The permalink of the post
+  link: String @deprecated
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int @deprecated
+
+  # The local modified time for a post. If a post was recently updated the
+  # modified field will change to match the corresponding time.
+  modified: String @deprecated
+
+  # The GMT modified time for a post. If a post was recently updated the modified
+  # field will change to match the corresponding time in GMT.
+  modifiedGmt: String @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  pageId: Int! @deprecated
+
+  # The parent of the object. The parent object can be of various types
+  parent: PostObjectUnion @deprecated
+
+  # URLs that have been pinged.
+  pinged: [String] @deprecated
+
+  # Whether the pings are open or closed for this particular post.
+  pingStatus: String @deprecated
+
+  # The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name
+  # field and the post_name column in the database for the
+  # &quot;post_objects&quot; table.
+  slug: String @deprecated
+
+  # The current status of the object
+  status: String @deprecated
+
+  # Terms connected to the page
+  termNames(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # Terms connected to the page
+  terms(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [TermObjectUnion] @deprecated
+
+  # Terms connected to the page
+  termSlugs(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+  title(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # URLs queued to be pinged.
+  toPing: [String] @deprecated
+
+  # URI path for the resource
+  uri: String @deprecated
+}
+
+# Connection between the page type and the page type
+type PageToCommentConnection {
+  # Edges for the PageToCommentConnection connection
+  edges: [PageToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type PageToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the PageToCommentConnection connection
+input PageToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Connection between the page type and the page type
+type PageToPageConnection {
+  # Edges for the PageToPageConnection connection
+  edges: [PageToPageConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Page] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type PageToPageConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Page @deprecated
+}
+
+# Arguments for filtering the PageToPageConnection connection
+input PageToPageConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# An plugin object
+type Plugin implements Node {
+  # Name of the plugin author(s), may also be a company name.
+  author: String @deprecated
+
+  # URI for the related author(s)/company website.
+  authorUri: String @deprecated
+
+  # Description of the plugin.
+  description: String @deprecated
+  id: ID! @deprecated
+
+  # Display name of the plugin.
+  name: String @deprecated
+
+  # URI for the plugin website. This is useful for directing users for support requests etc.
+  pluginUri: String @deprecated
+
+  # Current version of the plugin.
+  version: String @deprecated
+}
+
+# The post type
 type Post implements Node {
-# The content of the post.
-#
-# Arguments
-# format: Format of the field output
-content(format: PostObjectFieldFormatEnum): String
-# Post publishing date.
-date: String
-# The publishing date set in GMT.
-dateGmt: String
-# The desired slug of the post
-desiredSlug: String
-# The RSS enclosure for the object
-enclosure: String
-# The excerpt of the post.
-#
-# Arguments
-# format: Format of the field output
-excerpt(format: PostObjectFieldFormatEnum): String
-# The global unique identifier for this post. This currently matches the value
-# stored in WP_Post->guid and the guid column in the "post_objects"
-# database table.
-guid: String
-# The globally unique ID for the object
-id: ID!
-# The permalink of the post
-link: String
-# A field used for ordering posts. This is typically used with nav menu items or
-# for special ordering of hierarchical content types.
-menuOrder: Int
-# The local modified time for a post. If a post was recently updated the modified
-# field will change to match the corresponding time.
-modified: String
-# The GMT modified time for a post. If a post was recently updated the modified
-# field will change to match the corresponding time in GMT.
-modifiedGmt: String
-# The parent of the object. The parent object can be of various types
-parent: PostObjectUnion
-# URLs that have been pinged.
-pinged: [String]
-# Whether the pings are open or closed for this particular post.
-pingStatus: String
-# The id field matches the WP_Post->ID field.
-postId: Int!
-# The uri slug for the post. This is equivalent to the WP_Post->post_name field
-# and the post_name column in the database for the "post_objects" table.
-slug: String
-# The current status of the object
-status: String
-# The title of the post. This is currently just the raw title. An amendment to
-# support rendered title needs to be made.
-#
-# Arguments
-# format: Format of the field output
-title(format: PostObjectFieldFormatEnum): String
-# URLs queued to be pinged.
-toPing: [String]
-# URI path for the resource
-uri: String
+  # Ancestors of the object
+  ancestors(
+    # The types of ancestors to check for. Defaults to the same type as the current object
+    types: [PostTypeEnum]
+  ): [PostObjectUnion] @deprecated
+
+  # The author field will return a queryable User type matching the post&#039;s author.
+  author: User @deprecated
+
+  # Connection between the post type and the post type
+  categories(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: PostToCategoryConnectionWhereArgs
+  ): PostToCategoryConnection @deprecated
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int @deprecated
+
+  # Connection between the post type and the post type
+  comments(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: PostToCommentConnectionWhereArgs
+  ): PostToCommentConnection @deprecated
+
+  # Whether the comments are open or closed for this particular post.
+  commentStatus: String @deprecated
+
+  # The content of the post.
+  content(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # Post publishing date.
+  date: String @deprecated
+
+  # The publishing date set in GMT.
+  dateGmt: String @deprecated
+
+  # The desired slug of the post
+  desiredSlug: String @deprecated
+
+  # The user that most recently edited the object
+  editLast: User @deprecated
+
+  # If a user has edited the object within the past 15 seconds, this will return
+  # the user and the time they last edited. Null if the edit lock doesn&#039;t
+  # exist or is greater than 15 seconds
+  editLock: EditLock @deprecated
+
+  # The RSS enclosure for the object
+  enclosure: String @deprecated
+
+  # The excerpt of the post.
+  excerpt(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # The featured image for the object
+  featuredImage: MediaItem @deprecated
+
+  # The global unique identifier for this post. This currently matches the value
+  # stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot;
+  # database table.
+  guid: String @deprecated
+
+  # The globally unique ID for the object
+  id: ID! @deprecated
+
+  # The permalink of the post
+  link: String @deprecated
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int @deprecated
+
+  # The local modified time for a post. If a post was recently updated the
+  # modified field will change to match the corresponding time.
+  modified: String @deprecated
+
+  # The GMT modified time for a post. If a post was recently updated the modified
+  # field will change to match the corresponding time in GMT.
+  modifiedGmt: String @deprecated
+
+  # The parent of the object. The parent object can be of various types
+  parent: PostObjectUnion @deprecated
+
+  # URLs that have been pinged.
+  pinged: [String] @deprecated
+
+  # Whether the pings are open or closed for this particular post.
+  pingStatus: String @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  postId: Int! @deprecated
+
+  # The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name
+  # field and the post_name column in the database for the
+  # &quot;post_objects&quot; table.
+  slug: String @deprecated
+
+  # The current status of the object
+  status: String @deprecated
+
+  # Connection between the post type and the post type
+  tags(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: PostToTagConnectionWhereArgs
+  ): PostToTagConnection @deprecated
+
+  # Terms connected to the post
+  termNames(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # Terms connected to the post
+  terms(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [TermObjectUnion] @deprecated
+
+  # Terms connected to the post
+  termSlugs(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+  title(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # URLs queued to be pinged.
+  toPing: [String] @deprecated
+
+  # URI path for the resource
+  uri: String @deprecated
 }
+
+# Set relationships between the post to categories
+input PostCategoriesInput {
+  # If true, this will append the category to existing related categories. If
+  # false, this will replace existing relationships. Default true.
+  append: Boolean
+  nodes: [PostCategoriesNodeInput]
+}
+
+# List of categories to connect the post to. If an ID is set, it will be used to
+# create the connection. If not, it will look for a slug. If neither are valid
+# existing terms, and the site is configured to allow terms to be created during
+# post mutations, a term will be created using the Name if it exists in the input,
+# then fallback to the slug if it exists.
+input PostCategoriesNodeInput {
+  # The description of the category. This field is used to set a description of
+  # the category if a new one is created during the mutation.
+  description: String
+
+  # The ID of the category. If present, this will be used to connect to the post.
+  # If no existing category exists with this ID, no connection will be made.
+  id: ID
+
+  # The name of the category. This field is used to create a new term, if term
+  # creation is enabled in nested mutations, and if one does not already exist
+  # with the provided slug or ID or if a slug or ID is not provided. If no name is
+  # included and a term is created, the creation will fallback to the slug field.
+  name: String
+
+  # The slug of the category. If no ID is present, this field will be used to make
+  # a connection. If no existing term exists with this slug, this field will be
+  # used as a fallback to the Name field when creating a new term to connect to,
+  # if term creation is enabled as a nested mutation.
+  slug: String
+}
+
+# The format of post field data.
+enum PostObjectFieldFormatEnum {
+  # Provide the field value directly from database
+  RAW
+
+  # Apply the default WordPress rendering
+  RENDERED
+}
+
+# The column to use when filtering by date
+enum PostObjectsConnectionDateColumnEnum {
+  DATE
+  MODIFIED
+}
+
+# Field to order the connection by
+enum PostObjectsConnectionOrderbyEnum {
+  # Order by author
+  AUTHOR
+
+  # Order by publish date
+  DATE
+
+  # Preserve the ID order given in the IN array
+  IN
+
+  # Order by the menu order value
+  MENU_ORDER
+
+  # Order by last modified date
+  MODIFIED
+
+  # Preserve slug order given in the NAME_IN array
+  NAME_IN
+
+  # Order by parent ID
+  PARENT
+
+  # Order by slug
+  SLUG
+
+  # Order by title
+  TITLE
+}
+
+# Options for ordering the connection
+input PostObjectsConnectionOrderbyInput {
+  field: PostObjectsConnectionOrderbyEnum!
+  order: OrderEnum
+}
+
+union PostObjectUnion = Post | Page | MediaItem | Revision
+
+# The status of the object.
+enum PostStatusEnum {
+  # Objects with the auto-draft status
+  AUTO_DRAFT
+
+  # Objects with the draft status
+  DRAFT
+
+  # Objects with the future status
+  FUTURE
+
+  # Objects with the inherit status
+  INHERIT
+
+  # Objects with the pending status
+  PENDING
+
+  # Objects with the private status
+  PRIVATE
+
+  # Objects with the publish status
+  PUBLISH
+
+  # Objects with the request-completed status
+  REQUEST_COMPLETED
+
+  # Objects with the request-confirmed status
+  REQUEST_CONFIRMED
+
+  # Objects with the request-failed status
+  REQUEST_FAILED
+
+  # Objects with the request-pending status
+  REQUEST_PENDING
+
+  # Objects with the trash status
+  TRASH
+}
+
+# Set relationships between the post to tags
+input PostTagsInput {
+  # If true, this will append the tag to existing related tags. If false, this
+  # will replace existing relationships. Default true.
+  append: Boolean
+  nodes: [PostTagsNodeInput]
+}
+
+# List of tags to connect the post to. If an ID is set, it will be used to create
+# the connection. If not, it will look for a slug. If neither are valid existing
+# terms, and the site is configured to allow terms to be created during post
+# mutations, a term will be created using the Name if it exists in the input, then
+# fallback to the slug if it exists.
+input PostTagsNodeInput {
+  # The description of the tag. This field is used to set a description of the tag
+  # if a new one is created during the mutation.
+  description: String
+
+  # The ID of the tag. If present, this will be used to connect to the post. If no
+  # existing tag exists with this ID, no connection will be made.
+  id: ID
+
+  # The name of the tag. This field is used to create a new term, if term creation
+  # is enabled in nested mutations, and if one does not already exist with the
+  # provided slug or ID or if a slug or ID is not provided. If no name is included
+  # and a term is created, the creation will fallback to the slug field.
+  name: String
+
+  # The slug of the tag. If no ID is present, this field will be used to make a
+  # connection. If no existing term exists with this slug, this field will be used
+  # as a fallback to the Name field when creating a new term to connect to, if
+  # term creation is enabled as a nested mutation.
+  slug: String
+}
+
+# Connection between the post type and the post type
+type PostToCategoryConnection {
+  # Edges for the PostToCategoryConnection connection
+  edges: [PostToCategoryConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Category] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  taxonomyInfo: Taxonomy @deprecated
+}
+
+# An edge in a connection
+type PostToCategoryConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Category @deprecated
+}
+
+# Arguments for filtering the PostToCategoryConnection connection
+input PostToCategoryConnectionWhereArgs {
+  # Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  cacheDomain: String
+
+  # True to limit results to terms that have no children. This parameter has no
+  # effect on non-hierarchical taxonomies. Default false.
+  childless: Boolean
+
+  # Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  childOf: Int
+
+  # Retrieve terms where the description is LIKE the input value. Default empty.
+  descriptionLike: String
+
+  # Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  exclude: [ID]
+
+  # Array of term ids to exclude along with all of their descendant terms. If
+  # $include is non-empty, $exclude_tree is ignored. Default empty array.
+  excludeTree: [ID]
+
+  # Whether to hide terms not assigned to any posts. Accepts true or false. Default true
+  hideEmpty: Boolean
+
+  # Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  hierarchical: Boolean
+
+  # Array of term ids to include. Default empty array.
+  include: [ID]
+
+  # Array of names to return term(s) for. Default empty.
+  name: [String]
+
+  # Retrieve terms where the name is LIKE the input value. Default empty.
+  nameLike: String
+
+  # Array of object IDs. Results will be limited to terms associated with these objects.
+  objectIds: [ID]
+
+  # Field(s) to order terms by. Defaults to 'name'.
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  # Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  padCounts: Boolean
+
+  # Parent term ID to retrieve direct-child terms of. Default empty.
+  parent: Int
+
+  # Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  search: String
+
+  # Default false. If true, only the items connected to the source item will be
+  # returned. If false, all items will be returned regardless of connection to the source
+  shouldOnlyIncludeConnectedItems: Boolean
+
+  # Default false. If true, the connection will be output in a flat list instead
+  # of the hierarchical list. So child terms will be output in the same level as
+  # the parent terms
+  shouldOutputInFlatList: Boolean
+
+  # Array of slugs to return term(s) for. Default empty.
+  slug: [String]
+
+  # Array of term taxonomy IDs, to match when querying terms.
+  termTaxonomId: [ID]
+
+  # Whether to prime meta caches for matched terms. Default true.
+  updateTermMetaCache: Boolean
+}
+
+# Connection between the post type and the post type
+type PostToCommentConnection {
+  # Edges for the PostToCommentConnection connection
+  edges: [PostToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type PostToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the PostToCommentConnection connection
+input PostToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Connection between the post type and the post type
+type PostToTagConnection {
+  # Edges for the PostToTagConnection connection
+  edges: [PostToTagConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Tag] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  taxonomyInfo: Taxonomy @deprecated
+}
+
+# An edge in a connection
+type PostToTagConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Tag @deprecated
+}
+
+# Arguments for filtering the PostToTagConnection connection
+input PostToTagConnectionWhereArgs {
+  # Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  cacheDomain: String
+
+  # True to limit results to terms that have no children. This parameter has no
+  # effect on non-hierarchical taxonomies. Default false.
+  childless: Boolean
+
+  # Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  childOf: Int
+
+  # Retrieve terms where the description is LIKE the input value. Default empty.
+  descriptionLike: String
+
+  # Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  exclude: [ID]
+
+  # Array of term ids to exclude along with all of their descendant terms. If
+  # $include is non-empty, $exclude_tree is ignored. Default empty array.
+  excludeTree: [ID]
+
+  # Whether to hide terms not assigned to any posts. Accepts true or false. Default true
+  hideEmpty: Boolean
+
+  # Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  hierarchical: Boolean
+
+  # Array of term ids to include. Default empty array.
+  include: [ID]
+
+  # Array of names to return term(s) for. Default empty.
+  name: [String]
+
+  # Retrieve terms where the name is LIKE the input value. Default empty.
+  nameLike: String
+
+  # Array of object IDs. Results will be limited to terms associated with these objects.
+  objectIds: [ID]
+
+  # Field(s) to order terms by. Defaults to 'name'.
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  # Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  padCounts: Boolean
+
+  # Parent term ID to retrieve direct-child terms of. Default empty.
+  parent: Int
+
+  # Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  search: String
+
+  # Default false. If true, only the items connected to the source item will be
+  # returned. If false, all items will be returned regardless of connection to the source
+  shouldOnlyIncludeConnectedItems: Boolean
+
+  # Default false. If true, the connection will be output in a flat list instead
+  # of the hierarchical list. So child terms will be output in the same level as
+  # the parent terms
+  shouldOutputInFlatList: Boolean
+
+  # Array of slugs to return term(s) for. Default empty.
+  slug: [String]
+
+  # Array of term taxonomy IDs, to match when querying terms.
+  termTaxonomId: [ID]
+
+  # Whether to prime meta caches for matched terms. Default true.
+  updateTermMetaCache: Boolean
+}
+
+# An Post Type object
+type PostType implements Node {
+  # Whether this content type should can be exported.
+  canExport: Boolean @deprecated
+
+  # List of Taxonomies connected to the Post Type
+  connectedTaxonomies(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [Taxonomy] @deprecated
+
+  # A list of Taxonomies associated with the post type
+  connectedTaxonomyNames(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # Whether delete this type of content when the author of it is deleted from the system.
+  deleteWithUser: Boolean @deprecated
+
+  # Description of the content type.
+  description: String @deprecated
+
+  # Whether to exclude posts with this post type from front end search results.
+  excludeFromSearch: Boolean @deprecated
+
+  # The plural name of the post type within the GraphQL Schema.
+  graphqlPluralName: String @deprecated
+
+  # The singular name of the post type within the GraphQL Schema.
+  graphqlSingleName: String @deprecated
+
+  # Whether this content type should have archives. Content archives are generated by type and by date.
+  hasArchive: Boolean @deprecated
+
+  # Whether the post type is hierarchical, for example pages.
+  hierarchical: Boolean @deprecated
+  id: ID! @deprecated
+
+  # Display name of the content type.
+  label: String @deprecated
+
+  # Details about the post type labels.
+  labels: PostTypeLabelDetails @deprecated
+
+  # The name of the icon file to display as a menu icon.
+  menuIcon: String @deprecated
+
+  # The position of this post type in the menu. Only applies if show_in_menu is true.
+  menuPosition: Int @deprecated
+
+  # The internal name of the post type. This should not be used for display purposes.
+  name: String @deprecated
+
+  # Whether a post type is intended for use publicly either via the admin
+  # interface or by front-end users. While the default settings of
+  # exclude_from_search, publicly_queryable, show_ui, and show_in_nav_menus are
+  # inherited from public, each does not rely on this relationship and controls a
+  # very specific intention.
+  public: Boolean @deprecated
+
+  # Whether queries can be performed on the front end for the post type as part of parse_request().
+  publiclyQueryable: Boolean @deprecated
+
+  # Name of content type to diplay in REST API &quot;wp/v2&quot; namespace.
+  restBase: String @deprecated
+
+  # The REST Controller class assigned to handling this content type.
+  restControllerClass: String @deprecated
+
+  # Makes this post type available via the admin bar.
+  showInAdminBar: Boolean @deprecated
+
+  # Whether to add the post type to the GraphQL Schema.
+  showInGraphql: Boolean @deprecated
+
+  # Where to show the post type in the admin menu. To work, $show_ui must be true.
+  # If true, the post type is shown in its own top level menu. If false, no menu
+  # is shown. If a string of an existing top level menu (eg. &quot;tools.php&quot;
+  # or &quot;edit.php?post_type=page&quot;), the post type will be placed as a
+  # sub-menu of that.
+  showInMenu: Boolean @deprecated
+
+  # Makes this post type available for selection in navigation menus.
+  showInNavMenus: Boolean @deprecated
+
+  # Whether to add the post type route in the REST API &quot;wp/v2&quot; namespace.
+  showInRest: Boolean @deprecated
+
+  # Whether to generate and allow a UI for managing this post type in the admin.
+  showUi: Boolean @deprecated
+}
+
+# Allowed Post Types
+enum PostTypeEnum {
+  ATTACHMENT
+  PAGE
+  POST
+  REVISION
+}
+
+# Details for labels of the PostType
+type PostTypeLabelDetails {
+  # Default is ‘Add New’ for both hierarchical and non-hierarchical types.
+  addNew: String @deprecated
+
+  # Label for adding a new singular item.
+  addNewItem: String @deprecated
+
+  # Label to signify all items in a submenu link.
+  allItems: String @deprecated
+
+  # Label for archives in nav menus
+  archives: String @deprecated
+
+  # Label for the attributes meta box.
+  attributes: String @deprecated
+
+  # Label for editing a singular item.
+  editItem: String @deprecated
+
+  # Label for the Featured Image meta box title.
+  featuredImage: String @deprecated
+
+  # Label for the table views hidden heading.
+  filterItemsList: String @deprecated
+
+  # Label for the media frame button.
+  insertIntoItem: String @deprecated
+
+  # Label for the table hidden heading.
+  itemsList: String @deprecated
+
+  # Label for the table pagination hidden heading.
+  itemsListNavigation: String @deprecated
+
+  # Label for the menu name.
+  menuName: String @deprecated
+
+  # General name for the post type, usually plural.
+  name: String @deprecated
+
+  # Label for the new item page title.
+  newItem: String @deprecated
+
+  # Label used when no items are found.
+  notFound: String @deprecated
+
+  # Label used when no items are in the trash.
+  notFoundInTrash: String @deprecated
+
+  # Label used to prefix parents of hierarchical items.
+  parentItemColon: String @deprecated
+
+  # Label for removing the featured image.
+  removeFeaturedImage: String @deprecated
+
+  # Label for searching plural items.
+  searchItems: String @deprecated
+
+  # Label for setting the featured image.
+  setFeaturedImage: String @deprecated
+
+  # Name for one object of this post type.
+  singularName: String @deprecated
+
+  # Label for the media frame filter.
+  uploadedToThisItem: String @deprecated
+
+  # Label in the media frame for using a featured image.
+  useFeaturedImage: String @deprecated
+
+  # Label for viewing a singular item.
+  viewItem: String @deprecated
+
+  # Label for viewing post type archives.
+  viewItems: String @deprecated
+}
+
+# The reading setting type
+type ReadingSettings {
+  # Blog pages show at most.
+  postsPerPage: Int @deprecated
+}
+
+# Input for the registerUser mutation
+input RegisterUserInput {
+  # User's AOL IM account.
+  aim: String
+  clientMutationId: String!
+
+  # A string containing content about the user.
+  description: String
+
+  # A string that will be shown on the site. Defaults to user's username. It is
+  # likely that you will want to change this, for both appearance and security
+  # through obscurity (that is if you dont use and delete the default admin user).
+  displayName: String
+
+  # A string containing the user's email address.
+  email: String
+
+  # 	The user's first name.
+  firstName: String
+
+  # User's Jabber account.
+  jabber: String
+
+  # The user's last name.
+  lastName: String
+
+  # User's locale.
+  locale: String
+
+  # A string that contains a URL-friendly name for the user. The default is the user's username.
+  nicename: String
+
+  # The user's nickname, defaults to the user's username.
+  nickname: String
+
+  # A string that contains the plain text password for the user.
+  password: String
+
+  # The date the user registered. Format is Y-m-d H:i:s.
+  registered: String
+
+  # A string for whether to enable the rich editor or not. False if not empty.
+  richEditing: String
+
+  # An array of roles to be assigned to the user.
+  roles: [String]
+
+  # A string that contains the user's username.
+  username: String!
+
+  # A string containing the user's URL for the user's web site.
+  websiteUrl: String
+
+  # User's Yahoo IM account.
+  yim: String
+}
+
+# The payload for the registerUser mutation
+type RegisterUserPayload {
+  clientMutationId: String! @deprecated
+  user: User @deprecated
+}
+
+# The logical relation between each item in the array when there are more than one.
+enum RelationEnum {
+  AND
+  OR
+}
+
+# Input for the resetUserPassword mutation
+input ResetUserPasswordInput {
+  clientMutationId: String!
+
+  # Password reset key
+  key: String
+
+  # The user's login (username).
+  login: String
+
+  # The new password.
+  password: String
+}
+
+# The payload for the resetUserPassword mutation
+type ResetUserPasswordPayload {
+  clientMutationId: String! @deprecated
+  user: User @deprecated
+}
+
+# Input for the restoreComment mutation
+input RestoreCommentInput {
+  clientMutationId: String!
+
+  # The ID of the comment to be restored
+  id: ID!
+}
+
+# The payload for the restoreComment mutation
+type RestoreCommentPayload {
+  clientMutationId: String! @deprecated
+
+  # The restored comment object
+  comment: Comment @deprecated
+
+  # The ID of the restored comment
+  restoredId: ID @deprecated
+}
+
+# The revision type
+type Revision implements Node {
+  # Ancestors of the object
+  ancestors(
+    # The types of ancestors to check for. Defaults to the same type as the current object
+    types: [PostTypeEnum]
+  ): [PostObjectUnion] @deprecated
+
+  # The author field will return a queryable User type matching the post&#039;s author.
+  author: User @deprecated
+
+  # Whether the comments are open or closed for this particular post.
+  commentStatus: String @deprecated
+
+  # The content of the post.
+  content(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # Post publishing date.
+  date: String @deprecated
+
+  # The publishing date set in GMT.
+  dateGmt: String @deprecated
+
+  # The desired slug of the post
+  desiredSlug: String @deprecated
+
+  # The user that most recently edited the object
+  editLast: User @deprecated
+
+  # If a user has edited the object within the past 15 seconds, this will return
+  # the user and the time they last edited. Null if the edit lock doesn&#039;t
+  # exist or is greater than 15 seconds
+  editLock: EditLock @deprecated
+
+  # The RSS enclosure for the object
+  enclosure: String @deprecated
+
+  # The excerpt of the post.
+  excerpt(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # The global unique identifier for this post. This currently matches the value
+  # stored in WP_Post-&gt;guid and the guid column in the &quot;post_objects&quot;
+  # database table.
+  guid: String @deprecated
+
+  # The globally unique ID for the object
+  id: ID! @deprecated
+
+  # The permalink of the post
+  link: String @deprecated
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int @deprecated
+
+  # The local modified time for a post. If a post was recently updated the
+  # modified field will change to match the corresponding time.
+  modified: String @deprecated
+
+  # The GMT modified time for a post. If a post was recently updated the modified
+  # field will change to match the corresponding time in GMT.
+  modifiedGmt: String @deprecated
+
+  # The parent of the object. The parent object can be of various types
+  parent: PostObjectUnion @deprecated
+
+  # URLs that have been pinged.
+  pinged: [String] @deprecated
+
+  # Whether the pings are open or closed for this particular post.
+  pingStatus: String @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  revisionId: Int! @deprecated
+
+  # The uri slug for the post. This is equivalent to the WP_Post-&gt;post_name
+  # field and the post_name column in the database for the
+  # &quot;post_objects&quot; table.
+  slug: String @deprecated
+
+  # The current status of the object
+  status: String @deprecated
+
+  # Terms connected to the revision
+  termNames(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # Terms connected to the revision
+  terms(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [TermObjectUnion] @deprecated
+
+  # Terms connected to the revision
+  termSlugs(
+    # Select which taxonomies to limit the results to
+    taxonomies: [TaxonomyEnum]
+  ): [String] @deprecated
+
+  # The title of the post. This is currently just the raw title. An amendment to support rendered title needs to be made.
+  title(
+    # Format of the field output
+    format: PostObjectFieldFormatEnum
+  ): String @deprecated
+
+  # URLs queued to be pinged.
+  toPing: [String] @deprecated
+
+  # URI path for the resource
+  uri: String @deprecated
+}
+
+# The root mutation
+type RootMutation {
+  # The payload for the UpdateCategory mutation
+  updateCategory(
+    # Input for the UpdateCategory mutation
+    input: UpdateCategoryInput!
+  ): UpdateCategoryPayload @deprecated
+
+  # The payload for the UpdateTag mutation
+  updateTag(
+    # Input for the UpdateTag mutation
+    input: UpdateTagInput!
+  ): UpdateTagPayload @deprecated
+
+  # The payload for the createCategory mutation
+  createCategory(
+    # Input for the createCategory mutation
+    input: CreateCategoryInput!
+  ): CreateCategoryPayload @deprecated
+
+  # The payload for the createComment mutation
+  createComment(
+    # Input for the createComment mutation
+    input: CreateCommentInput!
+  ): CreateCommentPayload @deprecated
+
+  # The payload for the createMediaItem mutation
+  createMediaItem(
+    # Input for the createMediaItem mutation
+    input: CreateMediaItemInput!
+  ): CreateMediaItemPayload @deprecated
+
+  # The payload for the createPage mutation
+  createPage(
+    # Input for the createPage mutation
+    input: CreatePageInput!
+  ): CreatePagePayload @deprecated
+
+  # The payload for the createPost mutation
+  createPost(
+    # Input for the createPost mutation
+    input: CreatePostInput!
+  ): CreatePostPayload @deprecated
+
+  # The payload for the createTag mutation
+  createTag(
+    # Input for the createTag mutation
+    input: CreateTagInput!
+  ): CreateTagPayload @deprecated
+
+  # The payload for the createUser mutation
+  createUser(
+    # Input for the createUser mutation
+    input: CreateUserInput!
+  ): CreateUserPayload @deprecated
+
+  # The payload for the deleteCategory mutation
+  deleteCategory(
+    # Input for the deleteCategory mutation
+    input: DeleteCategoryInput!
+  ): DeleteCategoryPayload @deprecated
+
+  # The payload for the deleteComment mutation
+  deleteComment(
+    # Input for the deleteComment mutation
+    input: DeleteCommentInput!
+  ): DeleteCommentPayload @deprecated
+
+  # The payload for the deleteMediaItem mutation
+  deleteMediaItem(
+    # Input for the deleteMediaItem mutation
+    input: DeleteMediaItemInput!
+  ): DeleteMediaItemPayload @deprecated
+
+  # The payload for the deletePage mutation
+  deletePage(
+    # Input for the deletePage mutation
+    input: DeletePageInput!
+  ): DeletePagePayload @deprecated
+
+  # The payload for the deletePost mutation
+  deletePost(
+    # Input for the deletePost mutation
+    input: DeletePostInput!
+  ): DeletePostPayload @deprecated
+
+  # The payload for the deleteRevision mutation
+  deleteRevision(
+    # Input for the deleteRevision mutation
+    input: DeleteRevisionInput!
+  ): DeleteRevisionPayload @deprecated
+
+  # The payload for the deleteTag mutation
+  deleteTag(
+    # Input for the deleteTag mutation
+    input: DeleteTagInput!
+  ): DeleteTagPayload @deprecated
+
+  # The payload for the deleteUser mutation
+  deleteUser(
+    # Input for the deleteUser mutation
+    input: DeleteUserInput!
+  ): DeleteUserPayload @deprecated
+  increaseCount(
+    # The count to increase
+    count: Int
+  ): Int @deprecated
+
+  # The payload for the registerUser mutation
+  registerUser(
+    # Input for the registerUser mutation
+    input: RegisterUserInput!
+  ): RegisterUserPayload @deprecated
+
+  # The payload for the resetUserPassword mutation
+  resetUserPassword(
+    # Input for the resetUserPassword mutation
+    input: ResetUserPasswordInput!
+  ): ResetUserPasswordPayload @deprecated
+
+  # The payload for the restoreComment mutation
+  restoreComment(
+    # Input for the restoreComment mutation
+    input: RestoreCommentInput!
+  ): RestoreCommentPayload @deprecated
+
+  # The payload for the sendPasswordResetEmail mutation
+  sendPasswordResetEmail(
+    # Input for the sendPasswordResetEmail mutation
+    input: SendPasswordResetEmailInput!
+  ): SendPasswordResetEmailPayload @deprecated
+
+  # The payload for the updateComment mutation
+  updateComment(
+    # Input for the updateComment mutation
+    input: UpdateCommentInput!
+  ): UpdateCommentPayload @deprecated
+
+  # The payload for the updateMediaItem mutation
+  updateMediaItem(
+    # Input for the updateMediaItem mutation
+    input: UpdateMediaItemInput!
+  ): UpdateMediaItemPayload @deprecated
+
+  # The payload for the updatePage mutation
+  updatePage(
+    # Input for the updatePage mutation
+    input: UpdatePageInput!
+  ): UpdatePagePayload @deprecated
+
+  # The payload for the updatePost mutation
+  updatePost(
+    # Input for the updatePost mutation
+    input: UpdatePostInput!
+  ): UpdatePostPayload @deprecated
+
+  # The payload for the updateSettings mutation
+  updateSettings(
+    # Input for the updateSettings mutation
+    input: UpdateSettingsInput!
+  ): UpdateSettingsPayload @deprecated
+
+  # The payload for the updateUser mutation
+  updateUser(
+    # Input for the updateUser mutation
+    input: UpdateUserInput!
+  ): UpdateUserPayload @deprecated
+}
+
+# The root entry point into the Graph
+type RootQuery {
+  # Entry point to get all settings for the site
+  allSettings: Settings @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  categories(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToCategoryConnectionWhereArgs
+  ): RootQueryToCategoryConnection @deprecated
+
+  # A 0bject
+  category(id: ID!): Category @deprecated
+
+  # Returns a Comment
+  comment(id: ID!): Comment @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  comments(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToCommentConnectionWhereArgs
+  ): RootQueryToCommentConnection @deprecated
+  discussionSettings: DiscussionSettings @deprecated
+  generalSettings: GeneralSettings @deprecated
+
+  # A 0bject
+  mediaItem(id: ID!): MediaItem @deprecated
+
+  # A mediaItem object
+  mediaItemBy(
+    # Get the object by its global ID
+    id: ID
+
+    # Get the mediaItem by its database ID
+    mediaItemId: Int
+
+    # Get the mediaItem by its uri
+    uri: String
+
+    # Get the mediaItem by its slug (only available for non-hierarchical types)
+    slug: String
+  ): MediaItem @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  mediaItems(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToMediaItemConnectionWhereArgs
+  ): RootQueryToMediaItemConnection @deprecated
+
+  # A WordPress navigation menu
+  menu(id: ID!): Menu @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  menuItems(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToMenuItemConnectionWhereArgs
+  ): RootQueryToMenuItemConnection @deprecated
+
+  # A WordPress navigation menu item
+  menuItem(id: ID!): MenuItem @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  menus(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToMenuConnectionWhereArgs
+  ): RootQueryToMenuConnection @deprecated
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node @deprecated
+
+  # A 0bject
+  page(id: ID!): Page @deprecated
+
+  # A page object
+  pageBy(
+    # Get the object by its global ID
+    id: ID
+
+    # Get the page by its database ID
+    pageId: Int
+
+    # Get the page by its uri
+    uri: String
+  ): Page @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  pages(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToPageConnectionWhereArgs
+  ): RootQueryToPageConnection @deprecated
+
+  # A WordPress plugin
+  plugin(id: ID!): Plugin @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  plugins(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+  ): RootQueryToPluginConnection @deprecated
+
+  # A 0bject
+  post(id: ID!): Post @deprecated
+
+  # A post object
+  postBy(
+    # Get the object by its global ID
+    id: ID
+
+    # Get the post by its database ID
+    postId: Int
+
+    # Get the post by its uri
+    uri: String
+
+    # Get the post by its slug (only available for non-hierarchical types)
+    slug: String
+  ): Post @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  posts(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToPostConnectionWhereArgs
+  ): RootQueryToPostConnection @deprecated
+  readingSettings: ReadingSettings @deprecated
+
+  # A 0bject
+  revision(id: ID!): Revision @deprecated
+
+  # A revision object
+  revisionBy(
+    # Get the object by its global ID
+    id: ID
+
+    # Get the revision by its database ID
+    revisionId: Int
+
+    # Get the revision by its uri
+    uri: String
+
+    # Get the revision by its slug (only available for non-hierarchical types)
+    slug: String
+  ): Revision @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  revisions(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToRevisionConnectionWhereArgs
+  ): RootQueryToRevisionConnection @deprecated
+
+  # A 0bject
+  tag(id: ID!): Tag @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  tags(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToTagConnectionWhereArgs
+  ): RootQueryToTagConnection @deprecated
+
+  # A Theme object
+  theme(id: ID!): Theme @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  themes(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+  ): RootQueryToThemeConnection @deprecated
+
+  # Returns a user
+  user(id: ID!): User @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  userRoles(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+  ): RootQueryToUserRoleConnection @deprecated
+
+  # Returns a user role
+  userRole(id: ID!): UserRole @deprecated
+
+  # Connection between the RootQuery type and the RootQuery type
+  users(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: RootQueryToUserConnectionWhereArgs
+  ): RootQueryToUserConnection @deprecated
+
+  # Returns the current user
+  viewer: User @deprecated
+  writingSettings: WritingSettings @deprecated
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToCategoryConnection {
+  # Edges for the RootQueryToCategoryConnection connection
+  edges: [RootQueryToCategoryConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Category] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  taxonomyInfo: Taxonomy @deprecated
+}
+
+# An edge in a connection
+type RootQueryToCategoryConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Category @deprecated
+}
+
+# Arguments for filtering the RootQueryToCategoryConnection connection
+input RootQueryToCategoryConnectionWhereArgs {
+  # Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  cacheDomain: String
+
+  # True to limit results to terms that have no children. This parameter has no
+  # effect on non-hierarchical taxonomies. Default false.
+  childless: Boolean
+
+  # Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  childOf: Int
+
+  # Retrieve terms where the description is LIKE the input value. Default empty.
+  descriptionLike: String
+
+  # Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  exclude: [ID]
+
+  # Array of term ids to exclude along with all of their descendant terms. If
+  # $include is non-empty, $exclude_tree is ignored. Default empty array.
+  excludeTree: [ID]
+
+  # Whether to hide terms not assigned to any posts. Accepts true or false. Default true
+  hideEmpty: Boolean
+
+  # Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  hierarchical: Boolean
+
+  # Array of term ids to include. Default empty array.
+  include: [ID]
+
+  # Array of names to return term(s) for. Default empty.
+  name: [String]
+
+  # Retrieve terms where the name is LIKE the input value. Default empty.
+  nameLike: String
+
+  # Array of object IDs. Results will be limited to terms associated with these objects.
+  objectIds: [ID]
+
+  # Field(s) to order terms by. Defaults to 'name'.
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  # Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  padCounts: Boolean
+
+  # Parent term ID to retrieve direct-child terms of. Default empty.
+  parent: Int
+
+  # Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  search: String
+
+  # Default false. If true, only the items connected to the source item will be
+  # returned. If false, all items will be returned regardless of connection to the source
+  shouldOnlyIncludeConnectedItems: Boolean
+
+  # Default false. If true, the connection will be output in a flat list instead
+  # of the hierarchical list. So child terms will be output in the same level as
+  # the parent terms
+  shouldOutputInFlatList: Boolean
+
+  # Array of slugs to return term(s) for. Default empty.
+  slug: [String]
+
+  # Array of term taxonomy IDs, to match when querying terms.
+  termTaxonomId: [ID]
+
+  # Whether to prime meta caches for matched terms. Default true.
+  updateTermMetaCache: Boolean
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToCommentConnection {
+  # Edges for the RootQueryToCommentConnection connection
+  edges: [RootQueryToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the RootQueryToCommentConnection connection
+input RootQueryToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToMediaItemConnection {
+  # Edges for the RootQueryToMediaItemConnection connection
+  edges: [RootQueryToMediaItemConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [MediaItem] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type RootQueryToMediaItemConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: MediaItem @deprecated
+}
+
+# Arguments for filtering the RootQueryToMediaItemConnection connection
+input RootQueryToMediaItemConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToMenuConnection {
+  # Edges for the RootQueryToMenuConnection connection
+  edges: [RootQueryToMenuConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Menu] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToMenuConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Menu @deprecated
+}
+
+# Arguments for filtering the RootQueryToMenuConnection connection
+input RootQueryToMenuConnectionWhereArgs {
+  # The ID of the object
+  id: Int
+
+  # The menu location for the menu being queried
+  location: MenuLocationEnum
+
+  # The slug of the menu to query items for
+  slug: String
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToMenuItemConnection {
+  # Edges for the RootQueryToMenuItemConnection connection
+  edges: [RootQueryToMenuItemConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [MenuItem] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToMenuItemConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: MenuItem @deprecated
+}
+
+# Arguments for filtering the RootQueryToMenuItemConnection connection
+input RootQueryToMenuItemConnectionWhereArgs {
+  # The ID of the object
+  id: Int
+
+  # The menu location for the menu being queried
+  location: MenuLocationEnum
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToPageConnection {
+  # Edges for the RootQueryToPageConnection connection
+  edges: [RootQueryToPageConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Page] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type RootQueryToPageConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Page @deprecated
+}
+
+# Arguments for filtering the RootQueryToPageConnection connection
+input RootQueryToPageConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToPluginConnection {
+  # Edges for the RootQueryToPluginConnection connection
+  edges: [RootQueryToPluginConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Plugin] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToPluginConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Plugin @deprecated
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToPostConnection {
+  # Edges for the RootQueryToPostConnection connection
+  edges: [RootQueryToPostConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Post] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type RootQueryToPostConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Post @deprecated
+}
+
+# Arguments for filtering the RootQueryToPostConnection connection
+input RootQueryToPostConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToRevisionConnection {
+  # Edges for the RootQueryToRevisionConnection connection
+  edges: [RootQueryToRevisionConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Revision] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type RootQueryToRevisionConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Revision @deprecated
+}
+
+# Arguments for filtering the RootQueryToRevisionConnection connection
+input RootQueryToRevisionConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToTagConnection {
+  # Edges for the RootQueryToTagConnection connection
+  edges: [RootQueryToTagConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Tag] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  taxonomyInfo: Taxonomy @deprecated
+}
+
+# An edge in a connection
+type RootQueryToTagConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Tag @deprecated
+}
+
+# Arguments for filtering the RootQueryToTagConnection connection
+input RootQueryToTagConnectionWhereArgs {
+  # Unique cache key to be produced when this query is stored in an object cache. Default is 'core'.
+  cacheDomain: String
+
+  # True to limit results to terms that have no children. This parameter has no
+  # effect on non-hierarchical taxonomies. Default false.
+  childless: Boolean
+
+  # Term ID to retrieve child terms of. If multiple taxonomies are passed, $child_of is ignored. Default 0.
+  childOf: Int
+
+  # Retrieve terms where the description is LIKE the input value. Default empty.
+  descriptionLike: String
+
+  # Array of term ids to exclude. If $include is non-empty, $exclude is ignored. Default empty array.
+  exclude: [ID]
+
+  # Array of term ids to exclude along with all of their descendant terms. If
+  # $include is non-empty, $exclude_tree is ignored. Default empty array.
+  excludeTree: [ID]
+
+  # Whether to hide terms not assigned to any posts. Accepts true or false. Default true
+  hideEmpty: Boolean
+
+  # Whether to include terms that have non-empty descendants (even if $hide_empty is set to true). Default true.
+  hierarchical: Boolean
+
+  # Array of term ids to include. Default empty array.
+  include: [ID]
+
+  # Array of names to return term(s) for. Default empty.
+  name: [String]
+
+  # Retrieve terms where the name is LIKE the input value. Default empty.
+  nameLike: String
+
+  # Array of object IDs. Results will be limited to terms associated with these objects.
+  objectIds: [ID]
+
+  # Field(s) to order terms by. Defaults to 'name'.
+  orderby: TermObjectsConnectionOrderbyEnum
+
+  # Whether to pad the quantity of a term's children in the quantity of each term's "count" object variable. Default false.
+  padCounts: Boolean
+
+  # Parent term ID to retrieve direct-child terms of. Default empty.
+  parent: Int
+
+  # Search criteria to match terms. Will be SQL-formatted with wildcards before and after. Default empty.
+  search: String
+
+  # Default false. If true, only the items connected to the source item will be
+  # returned. If false, all items will be returned regardless of connection to the source
+  shouldOnlyIncludeConnectedItems: Boolean
+
+  # Default false. If true, the connection will be output in a flat list instead
+  # of the hierarchical list. So child terms will be output in the same level as
+  # the parent terms
+  shouldOutputInFlatList: Boolean
+
+  # Array of slugs to return term(s) for. Default empty.
+  slug: [String]
+
+  # Array of term taxonomy IDs, to match when querying terms.
+  termTaxonomId: [ID]
+
+  # Whether to prime meta caches for matched terms. Default true.
+  updateTermMetaCache: Boolean
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToThemeConnection {
+  # Edges for the RootQueryToThemeConnection connection
+  edges: [RootQueryToThemeConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Theme] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToThemeConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Theme @deprecated
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToUserConnection {
+  # Edges for the RootQueryToUserConnection connection
+  edges: [RootQueryToUserConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [User] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToUserConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: User @deprecated
+}
+
+# Arguments for filtering the RootQueryToUserConnection connection
+input RootQueryToUserConnectionWhereArgs {
+  # Array of IDs of users whose unapproved comments will be returned by the query regardless of status.
+  exclude: [Int]
+
+  # Pass an array of post types to filter results to users who have published posts in those post types.
+  hasPublishedPosts: [PostTypeEnum]
+
+  # Array of comment IDs to include.
+  include: [Int]
+
+  # The user login.
+  login: String
+
+  # An array of logins to include. Users matching one of these logins will be included in results.
+  loginIn: Int
+
+  # An array of logins to exclude. Users matching one of these logins will not be included in results.
+  loginNotIn: Int
+
+  # The user nicename.
+  nicename: String
+
+  # An array of nicenames to include. Users matching one of these nicenames will be included in results.
+  nicenameIn: [String]
+
+  # An array of nicenames to exclude. Users matching one of these nicenames will not be included in results.
+  nicenameNotIn: [String]
+
+  # An array of role names that users must match to be included in results. Note
+  # that this is an inclusive list: users must match *each* role.
+  role: UserRoleEnum
+
+  # An array of role names. Matched users must have at least one of these roles.
+  roleIn: [UserRoleEnum]
+
+  # An array of role names to exclude. Users matching one or more of these roles will not be included in results.
+  roleNotIn: [UserRoleEnum]
+
+  # Search keyword. Searches for possible string matches on columns. When
+  # "searchColumns" is left empty, it tries to determine which column to search in
+  # based on search string.
+  search: String
+
+  # Array of column names to be searched. Accepts 'ID', 'login', 'nicename', 'email', 'url'.
+  searchColumns: [UsersConnectionSearchColumnEnum]
+}
+
+# Connection between the RootQuery type and the RootQuery type
+type RootQueryToUserRoleConnection {
+  # Edges for the RootQueryToUserRoleConnection connection
+  edges: [RootQueryToUserRoleConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [UserRole] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type RootQueryToUserRoleConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: UserRole @deprecated
+}
+
+# Input for the sendPasswordResetEmail mutation
+input SendPasswordResetEmailInput {
+  clientMutationId: String!
+
+  # A string that contains the user's username or email address.
+  username: String!
+}
+
+# The payload for the sendPasswordResetEmail mutation
+type SendPasswordResetEmailPayload {
+  clientMutationId: String! @deprecated
+
+  # The user that the password reset email was sent to
+  user: User @deprecated
+}
+
+# All of the registered settings
+type Settings {
+  # Allow people to post comments on new articles.
+  discussionSettingsDefaultCommentStatus: String @deprecated
+
+  # Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+  discussionSettingsDefaultPingStatus: String @deprecated
+
+  # A date format for all date strings.
+  generalSettingsDateFormat: String @deprecated
+
+  # Site tagline.
+  generalSettingsDescription: String @deprecated
+
+  # This address is used for admin purposes, like new user notification.
+  generalSettingsEmail: String @deprecated
+
+  # WordPress locale code.
+  generalSettingsLanguage: String @deprecated
+
+  # A day number of the week that the week should start on.
+  generalSettingsStartOfWeek: Int @deprecated
+
+  # A time format for all time strings.
+  generalSettingsTimeFormat: String @deprecated
+
+  # A city in the same timezone as you.
+  generalSettingsTimezone: String @deprecated
+
+  # Site title.
+  generalSettingsTitle: String @deprecated
+
+  # Site URL.
+  generalSettingsUrl: String @deprecated
+
+  # Blog pages show at most.
+  readingSettingsPostsPerPage: Int @deprecated
+
+  # Default post category.
+  writingSettingsDefaultCategory: Int @deprecated
+
+  # Default post format.
+  writingSettingsDefaultPostFormat: String @deprecated
+
+  # Convert emoticons like :-) and :-P to graphics on display.
+  writingSettingsUseSmilies: Boolean @deprecated
+}
+
+# The tag type
+type Tag implements Node {
+  # The number of objects connected to the object
+  count: Int @deprecated
+
+  # The description of the object
+  description: String @deprecated
+
+  # The global ID for the post_tag
+  id: ID! @deprecated
+
+  # The link to the term
+  link: String @deprecated
+
+  # The human friendly name of the object.
+  name: String @deprecated
+
+  # Connection between the tag type and the tag type
+  posts(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: TagToPostConnectionWhereArgs
+  ): TagToPostConnection @deprecated
+
+  # An alphanumeric identifier for the object unique to its type.
+  slug: String @deprecated
+
+  # The id field matches the WP_Post-&gt;ID field.
+  tagId: Int @deprecated
+
+  # The name of the taxonomy this term belongs to
+  taxonomy: Taxonomy @deprecated
+
+  # The ID of the term group that this term object belongs to
+  termGroupId: Int @deprecated
+
+  # The taxonomy ID that the object is associated with
+  termTaxonomyId: Int @deprecated
+}
+
+# Connection between the tag type and the tag type
+type TagToPostConnection {
+  # Edges for the TagToPostConnection connection
+  edges: [TagToPostConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Post] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type TagToPostConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Post @deprecated
+}
+
+# Arguments for filtering the TagToPostConnection connection
+input TagToPostConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# A taxonomy object
+type Taxonomy implements Node {
+  # A list of Post Types associated with the taxonomy
+  connectedPostTypeNames(
+    # Select which post types to limit the results to
+    types: [PostTypeEnum]
+  ): [String] @deprecated
+
+  # List of Post Types connected to the Taxonomy
+  connectedPostTypes(
+    # Select which post types to limit the results to
+    types: [PostTypeEnum]
+  ): [PostType] @deprecated
+
+  # Description of the taxonomy. This field is equivalent to WP_Taxonomy-&gt;description
+  description: String @deprecated
+
+  # The plural name of the post type within the GraphQL Schema.
+  graphqlPluralName: String @deprecated
+
+  # The singular name of the post type within the GraphQL Schema.
+  graphqlSingleName: String @deprecated
+
+  # Whether the taxonomy is hierarchical
+  hierarchical: Boolean @deprecated
+  id: ID! @deprecated
+
+  # Name of the taxonomy shown in the menu. Usually plural.
+  label: String @deprecated
+
+  # The display name of the taxonomy. This field is equivalent to WP_Taxonomy-&gt;label
+  name: String @deprecated
+
+  # Whether the taxonomy is publicly queryable
+  public: Boolean @deprecated
+
+  # Name of content type to diplay in REST API &quot;wp/v2&quot; namespace.
+  restBase: String @deprecated
+
+  # The REST Controller class assigned to handling this content type.
+  restControllerClass: String @deprecated
+
+  # Whether to show the taxonomy as part of a tag cloud widget. This field is equivalent to WP_Taxonomy-&gt;show_tagcloud
+  showCloud: Boolean @deprecated
+
+  # Whether to display a column for the taxonomy on its post type listing screens.
+  showInAdminColumn: Boolean @deprecated
+
+  # Whether to add the post type to the GraphQL Schema.
+  showInGraphql: Boolean @deprecated
+
+  # Whether to show the taxonomy in the admin menu
+  showInMenu: Boolean @deprecated
+
+  # Whether the taxonomy is available for selection in navigation menus.
+  showInNavMenus: Boolean @deprecated
+
+  # Whether to show the taxonomy in the quick/bulk edit panel.
+  showInQuickEdit: Boolean @deprecated
+
+  # Whether to add the post type route in the REST API &quot;wp/v2&quot; namespace.
+  showInRest: Boolean @deprecated
+
+  # Whether to generate and allow a UI for managing terms in this taxonomy in the admin
+  showUi: Boolean @deprecated
+}
+
+# Allowed taxonomies
+enum TaxonomyEnum {
+  CATEGORY
+  TAG
+}
+
+# Options for ordering the connection by
+enum TermObjectsConnectionOrderbyEnum {
+  COUNT
+  DESCRIPTION
+  NAME
+  SLUG
+  TERM_GROUP
+  TERM_ID
+  TERM_ORDER
+}
+
+union TermObjectUnion = Category | Tag
+
+# A theme object
+type Theme implements Node {
+  # Name of the theme author(s), could also be a company name. This field is
+  # equivalent to WP_Theme-&gt;get( &quot;Author&quot; ).
+  author: String @deprecated
+
+  # URI for the author/company website. This field is equivalent to WP_Theme-&gt;get( &quot;AuthorURI&quot; ).
+  authorUri: String @deprecated
+
+  # The description of the theme. This field is equivalent to WP_Theme-&gt;get( &quot;Description&quot; ).
+  description: String @deprecated
+  id: ID! @deprecated
+
+  # Display name of the theme. This field is equivalent to WP_Theme-&gt;get( &quot;Name&quot; ).
+  name: String @deprecated
+
+  # The URL of the screenshot for the theme. The screenshot is intended to give an
+  # overview of what the theme looks like. This field is equivalent to
+  # WP_Theme-&gt;get_screenshot().
+  screenshot: String @deprecated
+
+  # The theme slug is used to internally match themes. Theme slugs can have
+  # subdirectories like: my-theme/sub-theme. This field is equivalent to
+  # WP_Theme-&gt;get_stylesheet().
+  slug: String @deprecated
+
+  # URI for the author/company website. This field is equivalent to WP_Theme-&gt;get( &quot;Tags&quot; ).
+  tags: [String] @deprecated
+
+  # A URI if the theme has a website associated with it. The Theme URI is handy
+  # for directing users to a theme site for support etc. This field is equivalent
+  # to WP_Theme-&gt;get( &quot;ThemeURI&quot; ).
+  themeUri: String @deprecated
+
+  # The current version of the theme. This field is equivalent to WP_Theme-&gt;get( &quot;Version&quot; ).
+  version: Float @deprecated
+}
+
+# Input for the UpdateCategory mutation
+input UpdateCategoryInput {
+  # The slug that the category will be an alias of
+  aliasOf: String
+  clientMutationId: String!
+
+  # The description of the category object
+  description: String
+
+  # The ID of the category object to update
+  id: ID!
+
+  # The name of the category object to mutate
+  name: String
+
+  # The ID of the category that should be set as the parent
+  parentId: ID
+
+  # If this argument exists then the slug will be checked to see if it is not an
+  # existing valid term. If that check succeeds (it is not a valid term), then it
+  # is added and the term id is given. If it fails, then a check is made to
+  # whether the taxonomy is hierarchical and the parent argument is not empty. If
+  # the second check succeeds, the term will be inserted and the term id will be
+  # given. If the slug argument is empty, then it will be calculated from the term name.
+  slug: String
+}
+
+# The payload for the UpdateCategory mutation
+type UpdateCategoryPayload {
+  # The created category
+  category: Category @deprecated
+  clientMutationId: String! @deprecated
+}
+
+# Input for the updateComment mutation
+input UpdateCommentInput {
+  # User agent used to post the comment.
+  agent: String
+
+  # The approval status of the comment.
+  approved: String
+
+  # The name of the comment's author.
+  author: String
+
+  # The email of the comment's author.
+  authorEmail: String
+
+  # IP address for the comment's author.
+  authorIp: String
+
+  # The url of the comment's author.
+  authorUrl: String
+  clientMutationId: String!
+
+  # Content of the comment.
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day ( e.g.
+  # 01/31/2017 ) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # The ID of the comment being updated.
+  id: ID!
+
+  # Parent comment of current comment.
+  parent: ID
+
+  # The ID of the post the comment belongs to.
+  postId: Int
+
+  # Type of comment.
+  type: String
+
+  # The userID of the comment's author.
+  userId: Int
+}
+
+# The payload for the updateComment mutation
+type UpdateCommentPayload {
+  clientMutationId: String! @deprecated
+
+  # The comment that was created
+  comment: Comment @deprecated
+}
+
+# Input for the updateMediaItem mutation
+input UpdateMediaItemInput {
+  # Alternative text to display when mediaItem is not displayed
+  altText: String
+
+  # The userId to assign as the author of the mediaItem
+  authorId: ID
+
+  # The caption for the mediaItem
+  caption: String
+  clientMutationId: String!
+
+  # The comment status for the mediaItem
+  commentStatus: String
+
+  # The date of the mediaItem
+  date: String
+
+  # The date (in GMT zone) of the mediaItem
+  dateGmt: String
+
+  # Description of the mediaItem
+  description: String
+
+  # The file name of the mediaItem
+  filePath: String
+
+  # The file type of the mediaItem
+  fileType: MimeTypeEnum
+
+  # The ID of the mediaItem object
+  id: ID!
+
+  # The WordPress post ID or the graphQL postId of the parent object
+  parentId: ID
+
+  # The ping status for the mediaItem
+  pingStatus: String
+
+  # The slug of the mediaItem
+  slug: String
+
+  # The status of the mediaItem
+  status: MediaItemStatusEnum
+
+  # The title of the mediaItem
+  title: String
+}
+
+# The payload for the updateMediaItem mutation
+type UpdateMediaItemPayload {
+  clientMutationId: String! @deprecated
+  mediaItem: MediaItem @deprecated
+}
+
+# Input for the updatePage mutation
+input UpdatePageInput {
+  # The userId to assign as the author of the post
+  authorId: ID
+  clientMutationId: String!
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int
+
+  # The comment status for the object
+  commentStatus: String
+
+  # The content of the object
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day (e.g.
+  # 01/31/2017) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # The excerpt of the object
+  excerpt: String
+
+  # The ID of the page object
+  id: ID!
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int
+
+  # If the post is an attachment or a media file, this field will carry the
+  # corresponding MIME type. This field is equivalent to the value of
+  # WP_Post->post_mime_type and the post_mime_type column in the "post_objects"
+  # database table.
+  mimeType: MimeTypeEnum
+
+  # The ID of the parent object
+  parentId: ID
+
+  # The password used to protect the content of the object
+  password: String
+
+  # URLs that have been pinged.
+  pinged: [String]
+
+  # The ping status for the object
+  pingStatus: String
+
+  # The slug of the object
+  slug: String
+
+  # The status of the object
+  status: PostStatusEnum
+
+  # The title of the post
+  title: String
+
+  # URLs queued to be pinged.
+  toPing: [String]
+}
+
+# The payload for the updatePage mutation
+type UpdatePagePayload {
+  clientMutationId: String! @deprecated
+  page: Page @deprecated
+}
+
+# Input for the updatePost mutation
+input UpdatePostInput {
+  # The userId to assign as the author of the post
+  authorId: ID
+
+  # Set connections between the post and categories
+  categories: PostCategoriesInput
+  clientMutationId: String!
+
+  # The number of comments. Even though WPGraphQL denotes this field as an
+  # integer, in WordPress this field should be saved as a numeric string for compatibility.
+  commentCount: Int
+
+  # The comment status for the object
+  commentStatus: String
+
+  # The content of the object
+  content: String
+
+  # The date of the object. Preferable to enter as year/month/day (e.g.
+  # 01/31/2017) as it will rearrange date as fit if it is not specified.
+  # Incomplete dates may have unintended results for example, "2017" as the input
+  # will use current date with timestamp 20:17 
+  date: String
+
+  # The excerpt of the object
+  excerpt: String
+
+  # The ID of the post object
+  id: ID!
+
+  # A field used for ordering posts. This is typically used with nav menu items or
+  # for special ordering of hierarchical content types.
+  menuOrder: Int
+
+  # If the post is an attachment or a media file, this field will carry the
+  # corresponding MIME type. This field is equivalent to the value of
+  # WP_Post->post_mime_type and the post_mime_type column in the "post_objects"
+  # database table.
+  mimeType: MimeTypeEnum
+
+  # The ID of the parent object
+  parentId: ID
+
+  # The password used to protect the content of the object
+  password: String
+
+  # URLs that have been pinged.
+  pinged: [String]
+
+  # The ping status for the object
+  pingStatus: String
+
+  # The slug of the object
+  slug: String
+
+  # The status of the object
+  status: PostStatusEnum
+
+  # Set connections between the post and tags
+  tags: PostTagsInput
+
+  # The title of the post
+  title: String
+
+  # URLs queued to be pinged.
+  toPing: [String]
+}
+
+# The payload for the updatePost mutation
+type UpdatePostPayload {
+  clientMutationId: String! @deprecated
+  post: Post @deprecated
+}
+
+# Input for the updateSettings mutation
+input UpdateSettingsInput {
+  clientMutationId: String!
+
+  # Allow people to post comments on new articles.
+  discussionSettingsDefaultCommentStatus: String
+
+  # Allow link notifications from other blogs (pingbacks and trackbacks) on new articles.
+  discussionSettingsDefaultPingStatus: String
+
+  # A date format for all date strings.
+  generalSettingsDateFormat: String
+
+  # Site tagline.
+  generalSettingsDescription: String
+
+  # This address is used for admin purposes, like new user notification.
+  generalSettingsEmail: String
+
+  # WordPress locale code.
+  generalSettingsLanguage: String
+
+  # A day number of the week that the week should start on.
+  generalSettingsStartOfWeek: Int
+
+  # A time format for all time strings.
+  generalSettingsTimeFormat: String
+
+  # A city in the same timezone as you.
+  generalSettingsTimezone: String
+
+  # Site title.
+  generalSettingsTitle: String
+
+  # Site URL.
+  generalSettingsUrl: String
+
+  # Blog pages show at most.
+  readingSettingsPostsPerPage: Int
+
+  # Default post category.
+  writingSettingsDefaultCategory: Int
+
+  # Default post format.
+  writingSettingsDefaultPostFormat: String
+
+  # Convert emoticons like :-) and :-P to graphics on display.
+  writingSettingsUseSmilies: Boolean
+}
+
+# The payload for the updateSettings mutation
+type UpdateSettingsPayload {
+  allSettings: Settings @deprecated
+  clientMutationId: String! @deprecated
+  discussionSettings: DiscussionSettings @deprecated
+  generalSettings: GeneralSettings @deprecated
+  readingSettings: ReadingSettings @deprecated
+  writingSettings: WritingSettings @deprecated
+}
+
+# Input for the UpdateTag mutation
+input UpdateTagInput {
+  # The slug that the post_tag will be an alias of
+  aliasOf: String
+  clientMutationId: String!
+
+  # The description of the post_tag object
+  description: String
+
+  # The ID of the tag object to update
+  id: ID!
+
+  # The name of the post_tag object to mutate
+  name: String
+
+  # If this argument exists then the slug will be checked to see if it is not an
+  # existing valid term. If that check succeeds (it is not a valid term), then it
+  # is added and the term id is given. If it fails, then a check is made to
+  # whether the taxonomy is hierarchical and the parent argument is not empty. If
+  # the second check succeeds, the term will be inserted and the term id will be
+  # given. If the slug argument is empty, then it will be calculated from the term name.
+  slug: String
+}
+
+# The payload for the UpdateTag mutation
+type UpdateTagPayload {
+  clientMutationId: String! @deprecated
+
+  # The created post_tag
+  tag: Tag @deprecated
+}
+
+# Input for the updateUser mutation
+input UpdateUserInput {
+  # User's AOL IM account.
+  aim: String
+  clientMutationId: String!
+
+  # A string containing content about the user.
+  description: String
+
+  # A string that will be shown on the site. Defaults to user's username. It is
+  # likely that you will want to change this, for both appearance and security
+  # through obscurity (that is if you dont use and delete the default admin user).
+  displayName: String
+
+  # A string containing the user's email address.
+  email: String
+
+  # 	The user's first name.
+  firstName: String
+
+  # The ID of the user
+  id: ID!
+
+  # User's Jabber account.
+  jabber: String
+
+  # The user's last name.
+  lastName: String
+
+  # User's locale.
+  locale: String
+
+  # A string that contains a URL-friendly name for the user. The default is the user's username.
+  nicename: String
+
+  # The user's nickname, defaults to the user's username.
+  nickname: String
+
+  # A string that contains the plain text password for the user.
+  password: String
+
+  # The date the user registered. Format is Y-m-d H:i:s.
+  registered: String
+
+  # A string for whether to enable the rich editor or not. False if not empty.
+  richEditing: String
+
+  # An array of roles to be assigned to the user.
+  roles: [String]
+
+  # A string containing the user's URL for the user's web site.
+  websiteUrl: String
+
+  # User's Yahoo IM account.
+  yim: String
+}
+
+# The payload for the updateUser mutation
+type UpdateUserPayload {
+  clientMutationId: String! @deprecated
+  user: User @deprecated
+}
+
+# A User object
+type User implements Node {
+  # Avatar object for user. The avatar object can be retrieved in different sizes by specifying the size argument.
+  avatar(
+    # The size attribute of the avatar field can be used to fetch avatars of
+    # different sizes. The value corresponds to the dimension in pixels to fetch.
+    # The default is 96 pixels.
+    size: Int = 96
+
+    # Whether to always show the default image, never the Gravatar. Default false
+    forceDefault: Boolean
+    rating: AvatarRatingEnum
+  ): Avatar @deprecated
+
+  # This field is the id of the user. The id of the user matches WP_User-&gt;ID
+  # field and the value in the ID column for the &quot;users&quot; table in SQL.
+  capabilities: [String] @deprecated
+
+  # User metadata option name. Usually it will be &quot;wp_capabilities&quot;.
+  capKey: String @deprecated
+
+  # Connection between the User type and the User type
+  comments(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: UserToCommentConnectionWhereArgs
+  ): UserToCommentConnection @deprecated
+
+  # Description of the user.
+  description: String @deprecated
+
+  # Email of the user. This is equivalent to the WP_User-&gt;user_email property.
+  email: String @deprecated
+
+  # A complete list of capabilities including capabilities inherited from a role.
+  # This is equivalent to the array keys of WP_User-&gt;allcaps.
+  extraCapabilities: [String] @deprecated
+
+  # First name of the user. This is equivalent to the WP_User-&gt;user_first_name property.
+  firstName: String @deprecated
+
+  # The globally unique identifier for the user
+  id: ID! @deprecated
+
+  # Last name of the user. This is equivalent to the WP_User-&gt;user_last_name property.
+  lastName: String @deprecated
+
+  # The preferred language locale set for the user. Value derived from get_user_locale().
+  locale: String @deprecated
+
+  # Connection between the User type and the User type
+  mediaItems(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: UserToMediaItemConnectionWhereArgs
+  ): UserToMediaItemConnection @deprecated
+
+  # Display name of the user. This is equivalent to the WP_User-&gt;dispaly_name property.
+  name: String @deprecated
+
+  # The nicename for the user. This field is equivalent to WP_User-&gt;user_nicename
+  nicename: String @deprecated
+
+  # Nickname of the user.
+  nickname: String @deprecated
+
+  # Connection between the User type and the User type
+  pages(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: UserToPageConnectionWhereArgs
+  ): UserToPageConnection @deprecated
+
+  # Connection between the User type and the User type
+  posts(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: UserToPostConnectionWhereArgs
+  ): UserToPostConnection @deprecated
+
+  # The date the user registered or was created. The field follows a full ISO8601 date string format.
+  registeredDate: String @deprecated
+
+  # Connection between the User type and the User type
+  revisions(
+    # The number of items to return after the referenced "after" cursor
+    first: Int
+    last: Int
+
+    # Cursor used along with the "first" argument to reference where in the dataset to get data
+    after: String
+
+    # Cursor used along with the "last" argument to reference where in the dataset to get data
+    before: String
+
+    # Arguments for filtering the connection
+    where: UserToRevisionConnectionWhereArgs
+  ): UserToRevisionConnection @deprecated
+
+  # A list of roles that the user has. Roles can be used for querying for certain
+  # types of users, but should not be used in permissions checks.
+  roles: [String] @deprecated
+
+  # The slug for the user. This field is equivalent to WP_User-&gt;user_nicename
+  slug: String @deprecated
+
+  # A website url that is associated with the user.
+  url: String @deprecated
+
+  # The Id of the user. Equivelant to WP_User-&gt;ID
+  userId: Int @deprecated
+
+  # Username for the user. This field is equivalent to WP_User-&gt;user_login.
+  username: String @deprecated
+}
+
+# A user role object
+type UserRole {
+  # The capabilities that belong to this role
+  capabilities: [String] @deprecated
+
+  # The globally unique identifier for the role
+  id: ID! @deprecated
+
+  # The UI friendly name of the role
+  name: String @deprecated
+}
+
+# Names of available user roles
+enum UserRoleEnum {
+  ADMINISTRATOR
+  AUTHOR
+  CONTRIBUTOR
+  EDITOR
+  MANAGE_SCHEMA_OPTIONS
+  SEO_EDITOR
+  SEO_MANAGER
+  SUBSCRIBER
+}
+
+# Column used for searching for users
+enum UsersConnectionSearchColumnEnum {
+  EMAIL
+  ID
+  LOGIN
+  NICENAME
+  URL
+}
+
+# Connection between the User type and the User type
+type UserToCommentConnection {
+  # Edges for the UserToCommentConnection connection
+  edges: [UserToCommentConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Comment] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+}
+
+# An edge in a connection
+type UserToCommentConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Comment @deprecated
+}
+
+# Arguments for filtering the UserToCommentConnection connection
+input UserToCommentConnectionWhereArgs {
+  # Comment author email address.
+  authorEmail: String
+
+  # Array of author IDs to include comments for.
+  authorIn: [ID]
+
+  # Array of author IDs to exclude comments for.
+  authorNotIn: [ID]
+
+  # Comment author URL.
+  authorUrl: String
+
+  # Array of comment IDs to include.
+  commentIn: [ID]
+
+  # Array of IDs of users whose unapproved comments will be returned by the
+  # 							query regardless of status.
+  commentNotIn: [ID]
+
+  # Include comments of a given type.
+  commentType: String
+
+  # Include comments from a given array of comment types.
+  commentTypeIn: [String]
+
+  # Exclude comments from a given array of comment types.
+  commentTypeNotIn: String
+
+  # Content object author ID to limit results by.
+  contentAuthor: [ID]
+
+  # Array of author IDs to retrieve comments for.
+  contentAuthorIn: [ID]
+
+  # Array of author IDs *not* to retrieve comments for.
+  contentAuthorNotIn: [ID]
+
+  # Limit results to those affiliated with a given content object
+  # 							ID.
+  contentId: ID
+
+  # Array of content object IDs to include affiliated comments
+  # 							for.
+  contentIdIn: [ID]
+
+  # Array of content object IDs to exclude affiliated comments
+  # 							for.
+  contentIdNotIn: [ID]
+
+  # Content object name to retrieve affiliated comments for.
+  contentName: String
+
+  # Content Object parent ID to retrieve affiliated comments for.
+  contentParent: Int
+
+  # Array of content object statuses to retrieve affiliated comments for.
+  # 							Pass 'any' to match any value.
+  contentStatus: [PostStatusEnum]
+
+  # Content object type or array of types to retrieve affiliated comments for. Pass 'any' to match any value.
+  contentType: [PostStatusEnum]
+
+  # Array of author IDs to include comments for.
+  includeUnapproved: [ID]
+
+  # Karma score to retrieve matching comments for.
+  karma: Int
+
+  # The cardinality of the order of the connection
+  order: OrderEnum
+
+  # Field to order the comments by.
+  orderby: CommentsConnectionOrderbyEnum
+
+  # Parent ID of comment to retrieve children of.
+  parent: Int
+
+  # Array of parent IDs of comments to retrieve children for.
+  parentIn: [ID]
+
+  # Array of parent IDs of comments *not* to retrieve children
+  # 							for.
+  parentNotIn: [ID]
+
+  # Search term(s) to retrieve matching comments for.
+  search: String
+
+  # Comment status to limit results by.
+  status: String
+
+  # Include comments for a specific user ID.
+  userId: ID
+}
+
+# Connection between the User type and the User type
+type UserToMediaItemConnection {
+  # Edges for the UserToMediaItemConnection connection
+  edges: [UserToMediaItemConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [MediaItem] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type UserToMediaItemConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: MediaItem @deprecated
+}
+
+# Arguments for filtering the UserToMediaItemConnection connection
+input UserToMediaItemConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the User type and the User type
+type UserToPageConnection {
+  # Edges for the UserToPageConnection connection
+  edges: [UserToPageConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Page] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type UserToPageConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Page @deprecated
+}
+
+# Arguments for filtering the UserToPageConnection connection
+input UserToPageConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the User type and the User type
+type UserToPostConnection {
+  # Edges for the UserToPostConnection connection
+  edges: [UserToPostConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Post] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type UserToPostConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Post @deprecated
+}
+
+# Arguments for filtering the UserToPostConnection connection
+input UserToPostConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Connection between the User type and the User type
+type UserToRevisionConnection {
+  # Edges for the UserToRevisionConnection connection
+  edges: [UserToRevisionConnectionEdge] @deprecated
+
+  # The nodes of the connection, without the edges
+  nodes: [Revision] @deprecated
+
+  # Information about pagination in a connection.
+  pageInfo: WPPageInfo @deprecated
+
+  # Information about the type of content being queried
+  postTypeInfo: PostType @deprecated
+}
+
+# An edge in a connection
+type UserToRevisionConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String @deprecated
+
+  # The item at the end of the edge
+  node: Revision @deprecated
+}
+
+# Arguments for filtering the UserToRevisionConnection connection
+input UserToRevisionConnectionWhereArgs {
+  # The user that's connected as the author of the object. Use the
+  # 							userId for the author object.
+  author: Int
+
+  # Find objects connected to author(s) in the array of author's userIds
+  authorIn: [ID]
+
+  # Find objects connected to the author by the author's nicename
+  authorName: String
+
+  # Find objects NOT connected to author(s) in the array of author's
+  # 							userIds
+  authorNotIn: [ID]
+
+  # Category ID
+  categoryId: Int
+
+  # Array of category IDs, used to display objects from one
+  # 										category OR another
+  categoryIn: [ID]
+
+  # Use Category Slug
+  categoryName: String
+
+  # Filter the connection based on dates
+  dateQuery: DateQueryInput
+
+  # True for objects with passwords; False for objects without passwords;
+  # 							null for all objects with or without passwords
+  hasPassword: Boolean
+
+  # Specific ID of the object
+  id: Int
+
+  # Array of IDs for the objects to retrieve
+  in: [ID]
+
+  # Get objects with a specific mimeType property
+  mimeType: MimeTypeEnum
+
+  # Slug / post_name of the object
+  name: String
+
+  # Specify objects to retrieve. Use slugs
+  nameIn: [String]
+
+  # Specify IDs NOT to retrieve. If this is used in the same query as "in",
+  # 							it will be ignored
+  notIn: [ID]
+
+  # What paramater to use to order the objects by.
+  orderby: [PostObjectsConnectionOrderbyInput]
+
+  # Use ID to return only children. Use 0 to return only top-level
+  # 							items
+  parent: String
+
+  # Specify objects whose parent is in an array
+  parentIn: [ID]
+
+  # Specify posts whose parent is not in an array
+  parentNotIn: [ID]
+
+  # Show posts with a specific password.
+  password: String
+
+  # Show Posts based on a keyword search
+  search: String
+  stati: [PostStatusEnum]
+  status: PostStatusEnum
+
+  # Tag Slug
+  tag: String
+
+  # Use Tag ID
+  tagId: String
+
+  # Array of tag IDs, used to display objects from one tag OR
+  # 							another
+  tagIn: [ID]
+
+  # Array of tag slugs, used to display objects from one tag OR
+  # 							another
+  tagSlugAnd: [String]
+
+  # Array of tag slugs, used to exclude objects in specified
+  # 							tags
+  tagSlugIn: [String]
+
+  # Title of the object
+  title: String
+}
+
+# Information about pagination in a connection.
+type WPPageInfo {
+  # When paginating forwards, the cursor to continue.
+  endCursor: String @deprecated
+
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean! @deprecated
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean! @deprecated
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String @deprecated
+}
+
+# The writing setting type
+type WritingSettings {
+  # Default post category.
+  defaultCategory: Int @deprecated
+
+  # Default post format.
+  defaultPostFormat: String @deprecated
+
+  # Convert emoticons like :-) and :-P to graphics on display.
+  useSmilies: Boolean @deprecated
+}
+

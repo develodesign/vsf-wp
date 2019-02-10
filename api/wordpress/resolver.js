@@ -1,6 +1,4 @@
 
-const resolver = {
-  Post: {}
-};
+const resolver = {};
 
 export default resolver;
