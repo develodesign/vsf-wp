@@ -36,8 +36,8 @@ let routes = [
 ]
 ```
 
-## Generate graphql scheme
+Copy `wordpress` api extension for to `Vue Storefront Api` level:
 
 ```shell
-npx get-graphql-schema https://you-wordpress-url/graphql > schema-wp.graphql
+$ cp -f ./api/wordpress ../vue-storefront-api/src/api/extensions/
 ```

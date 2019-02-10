@@ -1,0 +1,74 @@
+interface Node {
+# The id of the object
+id: ID!
+}
+
+enum PostObjectFieldFormatEnum {
+# Provide the field value directly from database
+RAW
+# Apply the default WordPress rendering
+RENDERED
+}
+
+union PostObjectUnion = Post
+
+type Post implements Node {
+# The content of the post.
+#
+# Arguments
+# format: Format of the field output
+content(format: PostObjectFieldFormatEnum): String
+# Post publishing date.
+date: String
+# The publishing date set in GMT.
+dateGmt: String
+# The desired slug of the post
+desiredSlug: String
+# The RSS enclosure for the object
+enclosure: String
+# The excerpt of the post.
+#
+# Arguments
+# format: Format of the field output
+excerpt(format: PostObjectFieldFormatEnum): String
+# The global unique identifier for this post. This currently matches the value
+# stored in WP_Post->guid and the guid column in the "post_objects"
+# database table.
+guid: String
+# The globally unique ID for the object
+id: ID!
+# The permalink of the post
+link: String
+# A field used for ordering posts. This is typically used with nav menu items or
+# for special ordering of hierarchical content types.
+menuOrder: Int
+# The local modified time for a post. If a post was recently updated the modified
+# field will change to match the corresponding time.
+modified: String
+# The GMT modified time for a post. If a post was recently updated the modified
+# field will change to match the corresponding time in GMT.
+modifiedGmt: String
+# The parent of the object. The parent object can be of various types
+parent: PostObjectUnion
+# URLs that have been pinged.
+pinged: [String]
+# Whether the pings are open or closed for this particular post.
+pingStatus: String
+# The id field matches the WP_Post->ID field.
+postId: Int!
+# The uri slug for the post. This is equivalent to the WP_Post->post_name field
+# and the post_name column in the database for the "post_objects" table.
+slug: String
+# The current status of the object
+status: String
+# The title of the post. This is currently just the raw title. An amendment to
+# support rendered title needs to be made.
+#
+# Arguments
+# format: Format of the field output
+title(format: PostObjectFieldFormatEnum): String
+# URLs queued to be pinged.
+toPing: [String]
+# URI path for the resource
+uri: String
+}
