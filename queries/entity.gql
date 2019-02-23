@@ -1,8 +1,0 @@
-query wordpress ($filter: TestInput) {
-  posts(
-    filter: $filter
-  )
-  {
-    title
-  }
-}
