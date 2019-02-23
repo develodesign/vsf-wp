@@ -1,5 +1,5 @@
 
-import { getSearchAdapter } from '@vue-storefront/core/lib/search/adapter/searchAdapterFactory'
+import SearchAdapter from '@develodesign/vsf-wp/lib/searchAdapter'
 import { processESResponseType } from '@vue-storefront/core/lib/search/adapter/graphql/processor/processType'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore'
 import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
@@ -14,7 +14,7 @@ export function afterRegistration (Vue, config, store, isServer) {
     console.log('Register wordpress entity graphql extension')
 
     // create graphQl searchAdapter
-    let searchAdapter = await getSearchAdapter('graphql')
+    let searchAdapter = new SearchAdapter()
 
     // register custom entity type using registerEntityTypeByQuery
     // differnt graphql servers cold be used for different entity types
@@ -44,21 +44,21 @@ export function afterRegistration (Vue, config, store, isServer) {
 
     const storeView = currentStoreView()
 
-    // create an empty SearchQuery to get all data for new custom entity
-    let searchQuery = new SearchQuery()
-    searchQuery = searchQuery.applyFilter({key: 'id', value: {'eq': 'cG9zdDo5MzQ='}})
+    let queryVars = { id: 'cG9zdDo5MzQ=' }
+    let query = 'query post ($id: ID!) { post(id: $id) { title} }'
 
     // prepare a SearchRequest object
     const Request = {
       store: storeView.storeCode, // TODO: add grouped product and bundled product support
       type: ENTITY_TYPE,
-      searchQuery: searchQuery,
+      query: query,
+      queryVars: queryVars,
       sort: ''
     }
 
     // apply test search
     searchAdapter.search(Request).then((resp) => { // we're always trying to populate cache - when online
-      console.log(resp.errors[0].message)
+      console.log(resp.data)
       const res = searchAdapter.entities[Request.type].resultPorcessor(resp, 0, 200)
       console.log('Testentity response: ', res)
     })
