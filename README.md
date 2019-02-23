@@ -35,9 +35,3 @@ let routes = [
   { name: 'single-post', path: '/single-post', component: SinglePost, props: {page: 'posts', title: 'Single Post'} }
 ]
 ```
-
-Copy `wordpress` api extension for to `Vue Storefront Api` level:
-
-```shell
-$ cp -f ./api/wordpress ../vue-storefront-api/src/api/extensions/
-```
