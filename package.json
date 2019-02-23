@@ -1,0 +1,32 @@
+{
+  "name": "@develodesign/vsf-wp",
+  "version": "0.1.0",
+  "description": "Wordpress integration module built for vue-storefront, by Develo Design.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/develodesign/vsf-wp.git"
+  },
+  "keywords": [
+    "wordpress",
+    "develodesign",
+    "vue-storefront",
+    "divanteltd/vue-storefront"
+  ],
+  "author": "Dmitry Schegolikhin <dmitry@develodesign.co.uk> (http://dimasch.github.io)",
+  "maintainers": [
+    "Luke Collymore <luke@develodesign.co.uk> (https://www.develodesign.co.uk)",
+    "Dmitry Schegolikhin <dmitry@develodesign.co.uk> (http://dimasch.github.io)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/develodesign/vsf-wp/issues"
+  },
+  "homepage": "https://github.com/develodesign/vsf-wp#readme"
+}

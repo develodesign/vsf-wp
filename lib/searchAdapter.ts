@@ -2,13 +2,14 @@ import rootStore from '@vue-storefront/store'
 import { currentStoreView, prepareStoreView } from '@vue-storefront/core/lib/multistore'
 import fetch from 'isomorphic-fetch'
 import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
-import SearchAdapter from '@vue-storefront/core/lib/search/adapter/graphql/searchAdapter'
 
-export class WpSearchAdapter extends SearchAdapter {
+
+export default class SearchAdapter {
+
+  public entities: any
 
   constructor () {
     this.entities = []
-    this.initBaseTypes()
   }
   /**
    * register entit type using registerEntityTypeByQuery
@@ -16,10 +17,6 @@ export class WpSearchAdapter extends SearchAdapter {
    * @return {Promise}
   */
   search (Request) {
-    if (!(Request.searchQuery instanceof SearchQuery)) {
-      throw new Error('SearchQuery instance has wrong class required to process with graphQl request.')
-    }
-
     if (!this.entities[Request.type]) {
       throw new Error('No entity type registered for ' + Request.type )
     }
@@ -29,8 +26,10 @@ export class WpSearchAdapter extends SearchAdapter {
       throw new Error('Store and SearchRequest.type are required arguments for executing Graphql query')
     }
 
-    const gqlQueryVars = '' // prepareQueryVars(Request)
-    const query = this.entities[Request.type].query
+    const gqlQueryVars = Request.queryVars
+    const query = Request.query // this.entities[Request.type].query
+
+    debugger
 
     const gqlQueryBody = JSON.stringify({
       query,
@@ -58,5 +57,45 @@ export class WpSearchAdapter extends SearchAdapter {
       .then(resp => {
         return resp.json()
       })
+  }
+
+  /**
+   * register entit type using registerEntityTypeByQuery
+   * @param {string} gql gql file path
+   * @param {String} url server url
+   * @param {function} queryProcessor some function which can update query if needed
+   * @param {function} resultPorcessor process results of response
+   * @return {Object}
+  */
+  registerEntityType (entityType, { url = '', gql, queryProcessor, resultPorcessor }) {
+    this.entities[entityType] = {
+      query: require(`${gql}`),
+      queryProcessor: queryProcessor,
+      resultPorcessor: resultPorcessor
+    }
+    if (url !== '') {
+      this.entities[entityType]['url'] = url
+    }
+    return this
+  }
+
+  /**
+   * register entit type using registerEntityTypeByQuery
+   * @param {graphQl} query is the graphql query
+   * @param {String} url server url
+   * @param {function} queryProcessor some function which can update query if needed
+   * @param {function} resultPorcessor process results of response
+   * @return {Object}
+  */
+  registerEntityTypeByQuery (entityType, { url = '', query, queryProcessor, resultPorcessor }) {
+    this.entities[entityType] = {
+      query: query,
+      queryProcessor: queryProcessor,
+      resultPorcessor: resultPorcessor
+    }
+    if (url !== '') {
+      this.entities[entityType]['url'] = url
+    }
+    return this
   }
 }
