@@ -7,14 +7,13 @@
 <script>
 export const SinglePost = {
   name: 'SinglePost',
-  methods: {
-    loadPost() {
-      this.$store.dispatch('wp/loadPost').then(res => {
-        success(res)
-      }).catch(err => {
-        failure(err)
-      })
-    }
+  created () {
+    this.$store.dispatch('wordpress/loadPost').then(res => {
+      debugger
+      success(res)
+    }).catch(err => {
+      failure(err)
+    })
   }
 }
 </script>

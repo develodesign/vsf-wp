@@ -13,12 +13,8 @@ export function afterRegistration (Vue, config, store, isServer) {
   Vue.prototype.$bus.$on('servercart-after-diff', async () => {
     console.log('Register wordpress entity graphql extension')
 
-    // create graphQl searchAdapter
     let searchAdapter = new SearchAdapter()
 
-    // register custom entity type using registerEntityTypeByQuery
-    // differnt graphql servers cold be used for different entity types
-    // resolver for testentity should be implemented on the graphql server provided
     searchAdapter.registerEntityTypeByQuery(ENTITY_TYPE, {
       url: config.wordpress.graphql.url,
       query: require('../queries/post.gql'),
@@ -42,24 +38,6 @@ export function afterRegistration (Vue, config, store, isServer) {
       }
     })
 
-    const storeView = currentStoreView()
-
-    let queryVars = { id: 'cG9zdDo5MzQ=' }
-    let query = 'query post ($id: ID!) { post(id: $id) { title} }'
-
-    // prepare a SearchRequest object
-    const Request = {
-      store: storeView.storeCode, // TODO: add grouped product and bundled product support
-      type: ENTITY_TYPE,
-      query: query,
-      queryVars: queryVars,
-      sort: ''
-    }
-
-    // apply test search
-    searchAdapter.search(Request).then((resp) => { // we're always trying to populate cache - when online
-      const res = searchAdapter.entities[Request.type].resultPorcessor(resp, 0, 200)
-      console.log('Response: ', res)
-    })
+    
   })
 }
