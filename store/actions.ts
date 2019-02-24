@@ -12,7 +12,7 @@ export const actions: ActionTree<Wordpress, any> = {
 
       const storeView = currentStoreView()
 
-      let query = 'query post ($id: ID!) { post(id: $id) { title} }'
+      let query = 'query post ($id: ID!) { post(id: $id) { title date link content(format: RAW) } }'
       let queryVars = { id: 'cG9zdDo5MzQ=' }
 
       // prepare a SearchRequest object
