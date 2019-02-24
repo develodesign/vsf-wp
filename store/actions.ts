@@ -26,7 +26,7 @@ export const actions: ActionTree<Wordpress, any> = {
       let searchAdapter = new SearchAdapter()
 
       searchAdapter.search(Request).then((resp) => {
-        console.log('Response: ', resp.data)
+        // console.log('Response: ', resp.data)
         // commit(types.SET_CURRENT_POST, result)
         resolve(resp.data)
       })

@@ -1,15 +1,21 @@
 <template>
   <div class="single-post">
-    Single post base template
+    {{ title }}
   </div>
 </template>
 
 <script>
 export default {
   name: 'SinglePost',
-  beforeMount () {
+  data () {
+    return {
+      title: ''
+    }
+  },
+  created () {
+    let self = this
     this.$store.dispatch('wordpress/loadPost').then(res => {
-      debugger
+      self.title = res.post.title
     }).catch(err => {
       console.error(err)
     })
