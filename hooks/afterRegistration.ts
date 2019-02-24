@@ -31,7 +31,7 @@ export function afterRegistration (Vue, config, store, isServer) {
           throw new Error('Invalid graphQl result - null not exepcted')
         }
         if (resp.hasOwnProperty('data')) {
-          return processESResponseType(resp.data.testentity, start, size)
+          return resp.data
         } else {
           if (resp.error) {
             throw new Error(JSON.stringify(resp.error))
@@ -58,9 +58,8 @@ export function afterRegistration (Vue, config, store, isServer) {
 
     // apply test search
     searchAdapter.search(Request).then((resp) => { // we're always trying to populate cache - when online
-      console.log(resp.data)
       const res = searchAdapter.entities[Request.type].resultPorcessor(resp, 0, 200)
-      console.log('Testentity response: ', res)
+      console.log('Response: ', res)
     })
   })
 }
