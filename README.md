@@ -32,6 +32,6 @@ const SinglePost = () => import(/* webpackChunkName: "vsf-wp-single-post" */ 'sr
 let routes = [
   ...
   { name: 'posts', path: '/posts', component: Posts, props: {page: 'posts', title: 'Posts'} },
-  { name: 'single-post', path: '/single-post', component: SinglePost, props: {page: 'posts', title: 'Single Post'} }
+  { name: 'single-post', path: '/single-post/:id', component: SinglePost, props: {page: 'post', title: 'Single Post'} }
 ]
 ```
