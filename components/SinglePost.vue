@@ -16,8 +16,8 @@ export default {
   },
   created () {
     let self = this
-    this.$store.dispatch('wordpress/loadPost').then(res => {
-      // debugger
+    let postId = this.$route.params.id
+    this.$store.dispatch('wordpress/loadPost', { id: postId }).then(res => {
       self.title = res.post.title
       self.content = res.post.content
     }).catch(err => {
