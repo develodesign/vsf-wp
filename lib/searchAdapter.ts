@@ -13,7 +13,7 @@ export default class SearchAdapter {
   search (Request) {
 
     const storeView = (Request.store === null) ? currentStoreView() : prepareStoreView(Request.store)
-    if (storeView.storeCode === undefined || storeView.storeCode == null || !Request.type) {
+    if (storeView.storeCode === undefined || storeView.storeCode == null) {
       throw new Error('Store and SearchRequest.type are required arguments for executing Graphql query')
     }
 
