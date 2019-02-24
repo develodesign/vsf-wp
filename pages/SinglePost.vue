@@ -1,12 +1,16 @@
 <template>
   <div class="single-post-page">
     Single post page
+    <post />
   </div>
 </template>
 
 <script>
+import Post from '@develodesign/vsf-wp/components/SinglePost'
+
 export default {
-  name: 'SinglePost'
+  name: 'SinglePost',
+  components: { Post }
 }
 </script>
 

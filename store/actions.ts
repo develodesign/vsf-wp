@@ -25,11 +25,10 @@ export const actions: ActionTree<Wordpress, any> = {
 
       let searchAdapter = new SearchAdapter()
 
-      searchAdapter.search(Request).then((resp) => { // we're always trying to populate cache - when online
-        const result = searchAdapter.entities[Request.type].resultPorcessor(resp, 0, 200)
-        console.log('Response: ', result)
+      searchAdapter.search(Request).then((resp) => {
+        console.log('Response: ', resp.data)
         // commit(types.SET_CURRENT_POST, result)
-        resolve(result)
+        resolve(resp.data)
       })
 
     })

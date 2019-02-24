@@ -5,14 +5,13 @@
 </template>
 
 <script>
-export const SinglePost = {
+export default {
   name: 'SinglePost',
-  created () {
+  beforeMount () {
     this.$store.dispatch('wordpress/loadPost').then(res => {
       debugger
-      success(res)
     }).catch(err => {
-      failure(err)
+      console.error(err)
     })
   }
 }
