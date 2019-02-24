@@ -5,7 +5,7 @@
 </template>
 
 <script>
-export const Posts = {
+export default {
   name: 'Posts',
   methods: {
     loadPostsList() {
