@@ -10,17 +10,17 @@ const searchAdapter = new SearchAdapter()
 // it's a good practice for all actions to return Promises with effect of their execution
 export const actions: ActionTree<Wordpress, any> = {
   // if you want to use cache in your module you can load cached data like this
-  loadPost ({ commit }) {
+  loadPost (context, { id }) {
     return new Promise ((resolve, reject) => {
 
-      let query = 'query post ($id: ID!) { post(id: $id) { title date link content(format: RAW) } }'
+      let query = 'query post ($id: ID!) { post(id: $id) { title date uri link content(format: RAW) } }'
 
       const Request = {
         store: storeView.storeCode,
         query: query,
-        queryVars: { id: 'cG9zdDo5MzQ=' }
+        queryVars: { id }
       }
-
+      
       searchAdapter.search(Request).then((resp) => {
         resolve(resp.data)
       })
@@ -30,7 +30,7 @@ export const actions: ActionTree<Wordpress, any> = {
   loadListOfPosts ({ commit }) {
     return new Promise ((resolve, reject) => {
 
-      let query = '{ posts { nodes { id title date link content(format: RAW) } } }'
+      let query = '{ posts { nodes { id postId title date uri link content(format: RAW) } } }'
 
       const Request = {
         store: storeView.storeCode,

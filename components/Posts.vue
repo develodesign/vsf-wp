@@ -1,7 +1,11 @@
 <template>
   <div class="posts-list">
     <div v-for="(post) in posts" :key="post.id">
-      {{ post.title }}
+      <router-link :to="localizedRoute(`/single-post/${post.id}`)" class="cl-tertiary links">
+        {{ post.title }}
+      </router-link>
+      - {{ post.date | date }}
+      <!-- <div class="content" v-html="$options.filters.truncate(post.content, 10, '...')"/> -->
     </div>
   </div>
 </template>
@@ -16,6 +20,11 @@ export default {
       posts: 'wordpress/posts'
     })
   },
+  filters: {
+    truncate: function (text, length, suffix) {
+      return text.substring(0, length) + suffix
+    }
+  },
   created () {
     this.$store.dispatch('wordpress/loadListOfPosts')
   }
@@ -24,5 +33,7 @@ export default {
 
 <style scoped>
   /* Always export scoped styles to not break the app */
-
+  .posts-list {
+    margin: 40px 40px 150px 40px;
+  }
 </style>
