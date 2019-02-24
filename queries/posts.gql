@@ -1,0 +1,11 @@
+{
+  posts {
+    nodes {
+      id
+      title
+      date
+      link
+      content(format: RAW)
+    }
+  }
+}

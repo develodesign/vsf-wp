@@ -1,12 +1,13 @@
 <template>
-  <div class="posts-page">
-    List of posts page
-  </div>
+  <post-list />
 </template>
 
 <script>
+import PostList from '@develodesign/vsf-wp/components/Posts'
+
 export default {
-  name: 'Posts'
+  name: 'Posts',
+  components: { PostList }
 }
 </script>
 
