@@ -14,15 +14,31 @@ export default {
       content: ''
     }
   },
-  created () {
-    let self = this
-    let postId = this.$route.params.id
-    this.$store.dispatch('wordpress/loadPost', { id: postId }).then(res => {
-      self.title = res.post.title
-      self.content = res.post.content
-    }).catch(err => {
-      console.error(err)
-    })
+  // Server-side only
+  // This will be called by the server renderer automatically
+  serverPrefetch () {
+    // return the Promise from the action
+    // so that the component waits before rendering
+    return this.fetchPost()
+  },
+  // Client-side only
+  mounted () {
+    // If we didn't already do it on the server
+    // we fetch the item (will first show the loading text)
+    if (!this.title) {
+      this.fetchPost()
+    }
+  },
+  methods: {
+    fetchPost () {
+      let self = this
+      return this.$store.dispatch('wordpress/loadPost', { id: this.$route.params.id }).then(res => {
+        self.title = res.post.title
+        self.content = res.post.content
+      }).catch(err => {
+        console.error(err)
+      })
+    }
   }
 }
 </script>
