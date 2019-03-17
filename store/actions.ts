@@ -2,7 +2,7 @@ import { Wordpress } from '../types/Wordpress'
 import { ActionTree } from 'vuex';
 import * as types from './mutation-types'
 import { currentStoreView } from '@vue-storefront/core/lib/multistore'
-import SearchAdapter from '@develodesign/vsf-wp/lib/searchAdapter'
+import SearchAdapter from '../lib/searchAdapter'
 
 const storeView = currentStoreView()
 const searchAdapter = new SearchAdapter()

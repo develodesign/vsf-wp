@@ -1,5 +1,5 @@
 import config from 'config'
-import rootStore from '@vue-storefront/store'
+import rootStore from '@vue-storefront/core/store'
 import fetch from 'isomorphic-fetch'
 import { currentStoreView, prepareStoreView } from '@vue-storefront/core/lib/multistore'
 import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
