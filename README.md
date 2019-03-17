@@ -13,6 +13,18 @@ So to get started install following free open source Wordpress Plugin into your 
 git clone git@github.com:develodesign/vsf-wp.git vue-storefront/src/modules/wordpress
 ```
 
+
+Import and register the module inside `vue-storefront/src/modules/index.ts`
+
+```ts
+import { Wordpress } from './wordpress'
+...
+export const registerModules: VueStorefrontModule[] = [
+...
+   Wordpress
+]
+```
+
 Add settings to `vue-storefront/config/local.json`
 
 ```shell
