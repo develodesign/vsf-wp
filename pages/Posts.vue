@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import PostList from '@develodesign/vsf-wp/components/Posts'
+import PostList from '../components/Posts'
 
 export default {
   name: 'Posts',

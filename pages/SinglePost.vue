@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Post from '@develodesign/vsf-wp/components/SinglePost'
+import Post from '../components/SinglePost'
 
 export default {
   name: 'SinglePost',

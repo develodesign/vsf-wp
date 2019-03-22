@@ -8,7 +8,7 @@ const storeView = currentStoreView()
 const searchAdapter = new SearchAdapter()
 
 // it's a good practice for all actions to return Promises with effect of their execution
-export const actions: ActionTree<Wordpress, any> = {
+const actions: ActionTree<Wordpress, any> = {
   // if you want to use cache in your module you can load cached data like this
   loadPost (context, { id }) {
     return new Promise ((resolve, reject) => {
@@ -47,3 +47,5 @@ export const actions: ActionTree<Wordpress, any> = {
     })
   }
 }
+
+export default actions
