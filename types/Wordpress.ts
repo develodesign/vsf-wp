@@ -1,5 +1,8 @@
-// This object should represent structure of your modules Vuex state
-// It's a good practice is to name this interface accordingly to the KET (for example mailchimpState)
-export interface Wordpress {
-  posts: string[]
+import Post from "./Post"
+import Category from "./Category"
+
+export default interface Wordpress {
+    posts: Post[],
+    categories: Category[]
 }
+  
