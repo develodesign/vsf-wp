@@ -1,0 +1,18 @@
+{
+  categories(first:100) {
+    edges {
+      node {
+        name,
+        slug,
+        description,
+        children{
+          nodes{
+            name,
+            slug,
+            description
+          }
+        }
+      }
+    }
+  }
+}
