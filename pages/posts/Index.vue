@@ -1,17 +1,16 @@
 <template>
-  <post />
+  <posts-index />
 </template>
 
 <script>
-import Post from '../components/SinglePost'
+import PostsIndex from '../../components/posts/Index'
 
 export default {
-  name: 'SinglePost',
-  components: { Post }
+  name: 'PostsPageIndex',
+  components: { PostsIndex }
 }
 </script>
 
 <style scoped>
   /* Always export scoped styles to not break the app */
-
 </style>

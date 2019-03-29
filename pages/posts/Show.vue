@@ -1,17 +1,16 @@
 <template>
-  <post-list />
+  <posts-show />
 </template>
 
 <script>
-import PostList from '../components/Posts'
+import PostsShow from '../../components/posts/Show'
 
 export default {
-  name: 'Posts',
-  components: { PostList }
+  name: 'PostsPageShow',
+  components: { PostsShow }
 }
 </script>
 
 <style scoped>
   /* Always export scoped styles to not break the app */
-
 </style>

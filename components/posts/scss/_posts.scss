@@ -1,0 +1,23 @@
+.blog-page-posts-index {
+
+  background: #f9f9f9;
+
+  .blog-page--hero {
+
+    background: #13133e;
+    padding-top: 100px;
+    padding-bottom: 200px;
+
+  }
+
+  .blog-page--page-title {
+
+    display: block;
+    text-align: center;
+    color: $white;
+    margin: 0 auto $gutter;
+    max-width: 650px;
+
+  }
+
+}

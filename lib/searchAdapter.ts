@@ -9,7 +9,7 @@ export default class SearchAdapter {
    * register entit type using registerEntityTypeByQuery
    * @param {Request} Request request object
    * @return {Promise}
-  */
+   */
   search (Request) {
 
     const storeView = (Request.store === null) ? currentStoreView() : prepareStoreView(Request.store)
@@ -28,15 +28,15 @@ export default class SearchAdapter {
     let urlGql = config.wordpress.graphql.url
 
     return fetch(urlGql, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: gqlQueryBody
-      })
-      .then(resp => {
-        return resp.json()
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: gqlQueryBody
+    })
+        .then(resp => {
+          return resp.json()
+        })
   }
 }
