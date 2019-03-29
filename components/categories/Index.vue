@@ -38,7 +38,7 @@
 
                     <ul>
                       <li v-for="(subcategory) in category.children.edges.slice(0, 5)" :key="subcategory.id">
-                        <router-link :to="localizedRoute(`/categories/${subcategory.node.slug}`)" class="blog-page--preview-link">
+                        <router-link :to="localizedRoute(`/categories/${category.slug}?id=${subcategory.node.id}`)" class="blog-page--preview-link">
                           &rtrif;&nbsp;&nbsp;{{ subcategory.node.name }}
                         </router-link>
                       </li>

@@ -67,22 +67,38 @@ export const actions: ActionTree<Wordpress, any> = {
 
     })
   },
-  loadCategory ({ commit }, { slug }) {
+  loadCategoryBySlug ({ commit }, { slug }) {
     return new Promise ((resolve, reject) => {
 
-      console.log('loadcategory', slug)
-
-      let query = 'query GET_CATEGORY($slug: String) { categories(where: {slug: $slug}) { nodes { id name slug children { edges { node { id slug } } } posts { nodes { id title date slug excerpt featuredImage { sourceUrl } } } } } }'
+      let query = 'query GET_CATEGORY { categories(where: {slug: "' + slug + '"}) { nodes { id name slug children { edges { node { id name slug } } } posts { nodes { id title date slug excerpt featuredImage { sourceUrl } } } } } }'
 
       const Request = {
         store: storeView.storeCode,
         query: query,
-        queryVars: { slug }
+        queryVars: {}
       }
 
       searchAdapter.search(Request).then((resp) => {
-        commit(types.SET_CURRENTCATEGORY, resp.data.categories.nodes)
-        resolve(resp.data.categories.nodes)
+        commit(types.SET_CURRENTCATEGORY, resp.data.categories.nodes[0])
+        resolve(resp.data.categories.nodes[0])
+      })
+
+    })
+  },
+  loadCategoryById ({ commit }, { id }) {
+    return new Promise ((resolve, reject) => {
+
+      let query = 'query category ($id: ID!) { category(id: $id) { id name slug children { edges { node { id name slug } } } posts { nodes { id title date slug excerpt featuredImage { sourceUrl } } } } }'
+
+      const Request = {
+        store: storeView.storeCode,
+        query: query,
+        queryVars: { id }
+      }
+
+      searchAdapter.search(Request).then((resp) => {
+        commit(types.SET_CURRENTCATEGORY, resp.data.category)
+        resolve(resp.data.category)
       })
 
     })
