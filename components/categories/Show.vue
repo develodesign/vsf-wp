@@ -1,6 +1,6 @@
 <template>
 
-  <div class="blog-page blog-page-categories-index">
+  <div class="blog-page blog-page-categories-show">
 
     <div v-if="category">
 
@@ -18,6 +18,10 @@
 
       <div v-if="category.children.edges.length">
 
+        <h2 class="text-center">
+          Subcategories
+        </h2>
+
         <div class="blog-page--category-entries">
 
           <div class="container">
@@ -31,12 +35,12 @@
                   <div class="blog-page--preview-small-inner">
 
                     <h3 class="blog-page--preview-title">
-                      <router-link :to="localizedRoute(`/categories/${category.slug}?id=${subcategory.node.slug}`)">
+                      <router-link :to="localizedRoute(`/categories/${category.slug}?id=${subcategory.node.id}`)">
                         {{ subcategory.node.name }}
                       </router-link>
                     </h3>
 
-                    <router-link :to="localizedRoute(`/categories/${category.slug}?id=${subcategory.node.slug}`)" class="blog-page--preview-link">
+                    <router-link :to="localizedRoute(`/categories/${category.slug}?id=${subcategory.node.id}`)" class="blog-page--preview-link">
                       View {{ subcategory.node.name }}&nbsp;<span class="slide-right">&rtrif;</span>
                     </router-link>
 
@@ -56,10 +60,10 @@
 
       <div v-if="category.posts.nodes && category.posts.nodes.length > 0">
 
-        <h2>
+        <h2 class="text-center">
           Posts
         </h2>
-        
+
         <div class="blog-page--entries">
 
           <div class="container">
