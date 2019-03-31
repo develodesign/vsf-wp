@@ -14,7 +14,7 @@ export const actions: ActionTree<Wordpress, any> = {
     return new Promise ((resolve, reject) => {
 
       // let query = 'query post ($id: ID!) { post(id: $id) { title date uri link content(format: RAW) } }'
-      let query = 'query GET_POST($slug: String!) { postBy(slug: $slug) { title date uri link content(format: RAW) } }'
+      let query = 'query GET_POST($slug: String!) { postBy(slug: $slug) { title date uri link featuredImage { sourceUrl } content(format: RAW) } }'
 
       const Request = {
         store: storeView.storeCode,
