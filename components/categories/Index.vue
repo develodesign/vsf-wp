@@ -92,7 +92,7 @@ export default {
   },
   // Client-side only
   mounted () {
-    if (!this.categories) {
+    if (!this.categories.length) {
       this.fetchCategories()
     }
   },

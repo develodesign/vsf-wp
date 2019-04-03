@@ -120,6 +120,15 @@ export default {
     // so that the component waits before rendering
     return this.fetchPosts()
   },
+
+  // Client-side only
+  mounted () {
+    // If we didn't already do it on the server
+    // we fetch the item (will first show the loading text)
+    if (!this.posts.length) {
+      this.fetchPosts()
+    }
+  },
   computed: {
     ...mapGetters({
       posts: 'wordpress/posts'
@@ -142,12 +151,6 @@ export default {
       let newDate = new Date(date)
       let dateFormat = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}
       return newDate.toLocaleDateString('en-GB', dateFormat)
-    }
-  },
-  // Client-side only
-  mounted () {
-    if (!this.posts) {
-      this.fetchPosts()
     }
   },
   methods: {
