@@ -86,10 +86,6 @@
       </h2>
     </div>
 
-    <router-link :to="localizedRoute(`/posts`)" style="padding-top: 100px; text-align: center;">
-      Back to posts
-    </router-link>
-
   </div>
 </template>
 
