@@ -1,17 +1,16 @@
 <template>
-  <post-list />
+  <posts-index />
 </template>
 
 <script>
-import PostList from '@develodesign/vsf-wp/components/Posts'
+import PostsIndex from '../../components/posts/Index'
 
 export default {
-  name: 'Posts',
-  components: { PostList }
+  name: 'PostsPageIndex',
+  components: { PostsIndex }
 }
 </script>
 
 <style scoped>
   /* Always export scoped styles to not break the app */
-
 </style>

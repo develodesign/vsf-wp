@@ -1,17 +1,16 @@
 <template>
-  <post />
+  <posts-show />
 </template>
 
 <script>
-import Post from '@develodesign/vsf-wp/components/SinglePost'
+import PostsShow from '../../components/posts/Show'
 
 export default {
-  name: 'SinglePost',
-  components: { Post }
+  name: 'PostsPageShow',
+  components: { PostsShow }
 }
 </script>
 
 <style scoped>
   /* Always export scoped styles to not break the app */
-
 </style>
