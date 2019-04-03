@@ -23,12 +23,10 @@
             </h4>
 
             <h2 class="blog-page--preview-title">
-              <router-link :to="localizedRoute(`/posts/${featuredPost.slug}`)">
-                {{ featuredPost.title }}
-              </router-link>
+              <router-link :to="localizedRoute(`/posts/${featuredPost.slug}`)" v-html="featuredPost.title" />
             </h2>
 
-            <p class="blog-page--preview-excerpt" v-html="$options.filters.truncate( featuredPost.excerpt, 175, '...' )">&nbsp;</p>
+            <p class="blog-page--preview-excerpt" v-html="$options.filters.truncate( featuredPost.excerpt, 355, '...' )">&nbsp;</p>
 
             <router-link :to="localizedRoute(`/posts/${featuredPost.slug}`)" class="blog-page--preview-link">
               Learn More&nbsp;<span class="slide-right">&rtrif;</span>
@@ -61,9 +59,7 @@
                   </h4>
 
                   <h3 class="blog-page--preview-title">
-                    <router-link :to="localizedRoute(`/posts/${post.slug}`)">
-                      {{ post.title }}
-                    </router-link>
+                    <router-link :to="localizedRoute(`/posts/${post.slug}`)" v-html="post.title" />
                   </h3>
 
                   <p class="blog-page--preview-excerpt" v-html="$options.filters.truncate( post.excerpt, 175, '...' )">&nbsp;</p>
