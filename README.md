@@ -10,7 +10,7 @@ So to get started install following free open source Wordpress Plugin into your 
 ## Installation
 
 ```shell
-git clone git@github.com:develodesign/vsf-wp.git vue-storefront/src/modules/wordpress
+git clone https://github.com/develodesign/vsf-wp.git vue-storefront/src/modules/wordpress
 ```
 
 
@@ -38,12 +38,16 @@ Add settings to `vue-storefront/config/local.json`
 Open router configuration in your theme `vue-storefront/src/themes/you-theme/router/index.js` For default theme use path `vue-storefront/src/themes/default/router/index.js` And add some routes:
 
 ```js
-const Posts = () => import(/* webpackChunkName: "vsf-wp-posts" */ 'src/modules/wordpress/pages/Posts')
-const SinglePost = () => import(/* webpackChunkName: "vsf-wp-single-post" */ 'src/modules/wordpress/pages/SinglePost')
+const PostsIndex = () => import(/* webpackChunkName: "vsf-wp-posts-index" */ 'src/modules/wordpress/pages/posts/Index')
+const PostsShow = () => import(/* webpackChunkName: "vsf-wp-posts-show" */ 'src/modules/wordpress/pages/posts/Show')
+const CategoriesIndex = () => import(/* webpackChunkName: "vsf-wp-categories-index" */ 'src/modules/wordpress/pages/categories/Index')
+const CategoriesShow = () => import(/* webpackChunkName: "vsf-wp-categories-show" */ 'src/modules/wordpress/pages/categories/Show')
 ...
 let routes = [
   ...
-  { name: 'posts', path: '/posts', component: Posts, props: {page: 'posts', title: 'Posts'} },
-  { name: 'single-post', path: '/single-post/:id', component: SinglePost, props: {page: 'post', title: 'Single Post'} }
+  { name: 'posts-index', path: '/posts', component: PostsIndex, props: {page: 'posts', title: 'Posts'} },
+  { name: 'posts-show', path: '/posts/:slug', component: PostsShow, props: {page: 'post', title: 'View Post'} },
+  { name: 'categories-index', path: '/categories', component: CategoriesIndex, props: {page: 'categories', title: 'View Categories'} },
+  { name: 'categories-show', path: '/categories/:slug', component: CategoriesShow, props: {page: 'category', title: 'View Category'} }
 ]
 ```
