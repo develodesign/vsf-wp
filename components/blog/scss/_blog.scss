@@ -93,11 +93,12 @@ $gutter: 30px;
 
     margin: 20px 0 0;
     color: #588bef;
-    display: block;
+    display: inline-block;
     text-decoration: none;
     font-family: $merriweather;
     font-weight: 700;
-
+    width: auto;
+    padding-bottom: 3px;
   }
 
   .blog-page--preview-large {
