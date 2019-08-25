@@ -2,7 +2,6 @@ import config from 'config'
 import rootStore from '@vue-storefront/core/store'
 import fetch from 'isomorphic-fetch'
 import { currentStoreView, prepareStoreView } from '@vue-storefront/core/lib/multistore'
-import SearchQuery from '@vue-storefront/core/lib/search/searchQuery'
 
 export default class SearchAdapter {
   /**
@@ -12,7 +11,7 @@ export default class SearchAdapter {
    */
   search (Request) {
 
-    const storeView = (Request.store === null) ? currentStoreView() : prepareStoreView(Request.store)
+    const storeView = (Request.store === undefined) ? currentStoreView() : prepareStoreView(Request.store)
     if (storeView.storeCode === undefined || storeView.storeCode == null) {
       throw new Error('Store and SearchRequest.type are required arguments for executing Graphql query')
     }
@@ -34,9 +33,8 @@ export default class SearchAdapter {
         'Accept': 'application/json'
       },
       body: gqlQueryBody
+    }).then(resp => {
+      return resp.json()
     })
-        .then(resp => {
-          return resp.json()
-        })
   }
 }
