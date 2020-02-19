@@ -14,7 +14,7 @@
 
       <div class="container">
 
-        <div class="blog-page--preview-large blog-page--preview-large-hero-merge" :style="{backgroundImage: `url(${featuredPost.featuredImage.sourceUrl})`}">
+        <div class="blog-page--preview-large blog-page--preview-large-hero-merge" :style="getPostImage(featuredPost)">
 
           <div class="blog-page--preview-large-inner">
 

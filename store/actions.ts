@@ -25,6 +25,8 @@ export const actions: ActionTree<Wordpress, any> = {
       searchAdapter.search(Request).then((resp) => {
         commit(types.SET_CURRENTPOST, resp.data.postBy)
         resolve(resp.data.postBy)
+      }, error => {
+        reject(error)
       })
 
     })
@@ -44,6 +46,8 @@ export const actions: ActionTree<Wordpress, any> = {
         let posts = resp.data.posts.nodes
         commit(types.SET_POSTS, posts)
         resolve(posts)
+      }, error => {
+        reject(error)
       })
 
     })
@@ -63,8 +67,9 @@ export const actions: ActionTree<Wordpress, any> = {
         let categories = resp.data.categories.nodes
         commit(types.SET_CATEGORIES, categories)
         resolve(categories)
+      }, error => {
+        reject(error)
       })
-
     })
   },
   loadCategoryBySlug ({ commit }, { slug }) {
@@ -81,6 +86,8 @@ export const actions: ActionTree<Wordpress, any> = {
       searchAdapter.search(Request).then((resp) => {
         commit(types.SET_CURRENTCATEGORY, resp.data.categories.nodes[0])
         resolve(resp.data.categories.nodes[0])
+      }, error => {
+        reject(error)
       })
 
     })
@@ -99,6 +106,8 @@ export const actions: ActionTree<Wordpress, any> = {
       searchAdapter.search(Request).then((resp) => {
         commit(types.SET_CURRENTCATEGORY, resp.data.category)
         resolve(resp.data.category)
+      }, error => {
+        reject(error)
       })
 
     })
