@@ -19,10 +19,10 @@ Import and register the module inside `vue-storefront/src/modules/index.ts`
 ```ts
 import { Wordpress } from './wordpress'
 ...
-export const registerModules: VueStorefrontModule[] = [
+export function registerClientModules () {
 ...
-   Wordpress
-]
+   registerModule(Wordpress)
+)
 ```
 
 Add settings to `vue-storefront/config/local.json`
@@ -30,7 +30,7 @@ Add settings to `vue-storefront/config/local.json`
 ```shell
 "wordpress": {
     "graphql":{
-      "url": "https://you-wordpress-url/graphql"
+      "url": "https://your-wordpress-url/graphql"
     }
   }
 ```
